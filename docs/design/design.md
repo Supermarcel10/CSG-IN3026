@@ -187,7 +187,6 @@ The design encompasses most of the base design of the GUIs. The GUI is designed 
 As much as the design might seem relatively flat and 2D. The general ideology of the game is for it to be 3D with (aprox) a 30* angle (isometric-like) - that way part of the volume of buildings and objects can be seen.
 
 A good example of the intended execution is early versions of Stronghold, which had a very specific camera technique.
-![[Pasted image 20241014234806.png]]
 ![stronghold-example.png](https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2140020/ss_60637ca071b3493304355e3f2818bd191aee61cf.jpg?t=1725019255)
 Stronghold: Definitive Edition image from [Steam](https://store.steampowered.com/app/2140020/Stronghold_Definitive_Edition/) (screenshot 2 of 8)
 
@@ -226,11 +225,11 @@ Week 1:
 - Options Menu
 - Handling Save Files
 - Skybox Setup
-  Week 2:
+Week 2:
 - Audio Preparations
 - Mesh Preparations
 - New Game Menu
-  Week 3:
+Week 3:
 - Setting up Generation of Islands
 - Setting up HUD
 - Finishing up Report
@@ -241,14 +240,14 @@ Week 4:
 - Creating and Implementing Buildings
 - Implementing Placing Buildings
 - Implementing Destroying Buildings
-  Week 5:
+Week 5:
 - Setting up Workers
 - Setting up Animations
 - Setting up Worker Flows
-  Week 6:
+Week 6:
 - Implementing Attack State
 - Implementing Defence Mechanic
-  Week 7:
+Week 7:
 - Bug Fixing
 - Reporting
 
