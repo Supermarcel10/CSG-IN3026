@@ -4,23 +4,22 @@
 #include "engine/events/key_event.h"
 
 
-class sandbox_app : public engine::application 
-{ 
+class game : public engine::application 
+{
 public: 
-    sandbox_app() 
-    { 
-        push_layer(new example_layer()); 
-    } 
+    game()
+    {
+        push_layer(new example_layer());
+    }
 
-    ~sandbox_app() = default; 
-
+    // TODO: Seems like a good potential for creating event managers for different layers, doing different things
     void on_event(engine::event& event) override
     { 
         application::on_event(event); 
 
         engine::event_dispatcher dispatcher(event); 
         // dispatch event on window X pressed 
-        dispatcher.dispatch<engine::key_pressed_event>(BIND_EVENT_FN(sandbox_app::on_key_pressed)); 
+        dispatcher.dispatch<engine::key_pressed_event>(BIND_EVENT_FN(game::on_key_pressed)); 
     } 
 
     bool on_key_pressed(engine::key_pressed_event& event) 
@@ -37,8 +36,7 @@ public:
     } 
 }; 
 
-
 engine::application* engine::create_application() 
 { 
-    return new sandbox_app(); 
+    return new game(); 
 }
