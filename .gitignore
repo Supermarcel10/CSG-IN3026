@@ -31,7 +31,18 @@
 *.out
 *.app
 
+# Builds / Binaries
+/**/bin/
+/**/obj/
+
+# JetBrains IDEs
 /.idea/
 
 # Visual Studio
 *.vcxproj.user
+*.sln.docstates
+*.suo
+*.user
+*.aps
+*.opensdf
+*.sdf
