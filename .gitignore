@@ -32,3 +32,6 @@
 *.app
 
 /.idea/
+
+# Visual Studio
+*.vcxproj.user
