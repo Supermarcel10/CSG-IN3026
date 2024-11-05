@@ -133,10 +133,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\example_layer.h" />
+    <ClInclude Include="src\layers\example_layer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\example_layer.cpp" />
+    <ClCompile Include="src\layers\example_layer.cpp" />
     <ClCompile Include="src\game.cpp" />
   </ItemGroup>
   <ItemGroup>
