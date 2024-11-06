@@ -134,10 +134,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\layers\example_layer.h" />
+    <ClInclude Include="src\layers\main_menu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\layers\example_layer.cpp" />
     <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\layers\main_menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\engine\engine.vcxproj">

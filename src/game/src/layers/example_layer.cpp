@@ -9,8 +9,6 @@
 example_layer::example_layer() 
     :m_2d_camera(-1.6f, 1.6f, -0.9f, 0.9f), 
     m_3d_camera((float)engine::application::window().width(), (float)engine::application::window().height())
-
-
 {
     // Hide the mouse and lock it inside the window
     //engine::input::anchor_mouse(true);
