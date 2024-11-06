@@ -1,15 +1,21 @@
 // --------- Entry Point ---------------
-#include "layers/example_layer.h"
 #include "engine/core/entry_point.h"
 #include "engine/events/key_event.h"
+#include "managers/game_state_manager.h"
+#include <engine/key_codes.h>
 
 
 class game : public engine::application 
 {
+private:
+    game_state_manager state_manager;
+
 public: 
     game()
+        : state_manager(*this)
     {
-        push_layer(new example_layer());
+        state_manager.set_state(game_state::MAIN_MENU);
+        //state_manager.set_state(game_state::IN_GAME);
     }
 
     // TODO: Seems like a good potential for creating event managers for different layers, doing different things
@@ -28,7 +34,7 @@ public:
         { 
             if (event.key_code() == engine::key_codes::KEY_ESCAPE) 
             { 
-                application::exit(); 
+                state_manager.set_state(game_state::EXIT_LOOP);
             } 
             //PYRO_TRACE("{0}", static_cast<char>(e.key_code())); 
         } 
