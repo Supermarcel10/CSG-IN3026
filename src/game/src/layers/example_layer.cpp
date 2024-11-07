@@ -54,12 +54,12 @@ example_layer::example_layer()
 
 	// Skybox texture from http://www.vwall.it/wp-content/plugins/canvasio3dpro/inc/resource/cubeMaps/
 	m_skybox = engine::skybox::create(50.f,
-		{ engine::texture_2d::create("assets/textures/skybox/SkyboxFront.bmp", true),
-		  engine::texture_2d::create("assets/textures/skybox/SkyboxRight.bmp", true),
-		  engine::texture_2d::create("assets/textures/skybox/SkyboxBack.bmp", true),
-		  engine::texture_2d::create("assets/textures/skybox/SkyboxLeft.bmp", true),
-		  engine::texture_2d::create("assets/textures/skybox/SkyboxTop.bmp", true),
-		  engine::texture_2d::create("assets/textures/skybox/SkyboxBottom.bmp", true)
+		{ engine::texture_2d::create("assets/textures/skybox/front.jpg", true),
+		  engine::texture_2d::create("assets/textures/skybox/right.jpg", true),
+		  engine::texture_2d::create("assets/textures/skybox/back.jpg", true),
+		  engine::texture_2d::create("assets/textures/skybox/left.jpg", true),
+		  engine::texture_2d::create("assets/textures/skybox/top.jpg", true),
+		  engine::texture_2d::create("assets/textures/skybox/bop.jpg", true)
 		});
 
 	// Orc warrior from https://sketchfab.com/3d-models/orc-warrior-4f8e272891a449c8935285eab8a3a2f9
@@ -199,15 +199,15 @@ void example_layer::on_render()
 } 
 
 void example_layer::on_event(engine::event& event) 
-{ 
+{
     if(event.event_type() == engine::event_type_e::key_pressed) 
-    { 
+    {
         auto& e = dynamic_cast<engine::key_pressed_event&>(event); 
         if(e.key_code() == engine::key_codes::KEY_TAB) 
         { 
             engine::render_command::toggle_wireframe();
         }
-    } 
+    }
 }
 
 void example_layer::check_bounce()
