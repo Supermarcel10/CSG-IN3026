@@ -5,7 +5,6 @@
 namespace engine
 {
 	class shader;
-	
 
 	struct character {
 		uint32_t     texture_id;  // ID handle of the glyph texture
@@ -16,18 +15,31 @@ namespace engine
 
 	class text_manager
 	{
-		public:
-			text_manager();
-			~text_manager();
-			
-			void render_text(engine::ref<engine::shader>, std::string text, float x, float y, float scale, glm::vec4 color);
-			static ref<text_manager> create();
+	private:
+		std::unordered_map<std::string, FT_Face> m_loaded_fonts;
+		std::unordered_map<std::string, std::unordered_map<char, engine::character>> m_font_characters;
+		uint32_t m_VAO, m_VBO;
+		FT_Library m_ft;
 
-		private:
-			uint32_t VAO, VBO;
-			FT_Library ft;
-			std::map<char, character> characters;
-			void init();
+	public:
+		text_manager();
+		~text_manager() = default;
+
+		void render_text(
+			engine::ref<engine::shader>,
+			std::string text,
+			float x,
+			float y,
+			float scale,
+			glm::vec4 color,
+			const std::string& font_file
+		);
+
+		static ref<text_manager> create();
+
+	private:
+		void load_font(const std::string& font_file);
+		engine::character get_character(FT_Face face, char c);
 	};
 }
 

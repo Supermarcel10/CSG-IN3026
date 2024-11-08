@@ -195,7 +195,8 @@ void example_layer::on_render()
 
 	// Render text
 	const auto text_shader = engine::renderer::shaders_library()->get("text_2D");
-	m_text_manager->render_text(text_shader, "Orange Text", 10.f, (float)engine::application::window().height()-25.f, 0.5f, glm::vec4(1.f, 0.5f, 0.f, 1.f));
+	m_text_manager->render_text(text_shader, "The quick brown fox jumps over the lazy dog", 10.f, (float)engine::application::window().height() / 6.f * 2.f, 0.5f, glm::vec4(1.f, 0.5f, 0.f, 1.f), "assets/fonts/Regular.ttf");
+	m_text_manager->render_text(text_shader, "The quick brown fox jumps over the lazy dog", 10.f, (float)engine::application::window().height() / 6.f * 3.f, 0.5f, glm::vec4(1.f, 0.5f, 0.f, 1.f), "assets/fonts/Title.ttf");
 } 
 
 void example_layer::on_event(engine::event& event) 
