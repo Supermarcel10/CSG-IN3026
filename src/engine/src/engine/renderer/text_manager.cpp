@@ -134,13 +134,13 @@ engine::character engine::text_manager::get_character(FT_Face face, char c)
 }
 
 void engine::text_manager::render_text(
-    const engine::ref<engine::shader> s,
     std::string text,
     float x,
     float y,
     float scale,
-    glm::vec4 colour,
-    const std::string& font_file
+    glm::vec4 color,
+    const std::string& font_file,
+    const engine::ref<engine::shader>& s
 )
 {
     // Load the font if it's not already loaded
@@ -152,7 +152,7 @@ void engine::text_manager::render_text(
 
     // Activate corresponding render state
     std::dynamic_pointer_cast<engine::gl_shader>(s)->bind();
-    std::dynamic_pointer_cast<engine::gl_shader>(s)->set_uniform("textColor", colour);
+    std::dynamic_pointer_cast<engine::gl_shader>(s)->set_uniform("textColor", color);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(m_VAO);
 

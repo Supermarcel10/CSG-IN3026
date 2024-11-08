@@ -1,5 +1,6 @@
 #pragma once
 #include <ft2build.h>
+#include "renderer.h"
 #include FT_FREETYPE_H
 
 namespace engine
@@ -26,13 +27,13 @@ namespace engine
 		~text_manager() = default;
 
 		void render_text(
-			engine::ref<engine::shader>,
 			std::string text,
 			float x,
 			float y,
 			float scale,
 			glm::vec4 color,
-			const std::string& font_file
+			const std::string& font_file,
+			const engine::ref<engine::shader>& s = engine::renderer::shaders_library()->get("text_2D")
 		);
 
 		static ref<text_manager> create();
