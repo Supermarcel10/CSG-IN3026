@@ -29,23 +29,22 @@ game_progress_state game_state_manager::get_progress_state() const {
 void game_state_manager::push_new_layer() {
     switch (current_state) {
     case game_state::MAIN_MENU:
-        engine.push_layer(new main_menu());
+        engine.push_layer(new main_menu(*this));
         break;
     case game_state::OPTIONS:
-        //engine.push_layer(new options_layer());
+        engine.push_layer(new example_layer(*this));
         break;
     case game_state::NEW_GAME_SETUP:
-        //engine.push_layer(new new_game_setup_layer());
+        engine.push_layer(new example_layer(*this));
         break;
     case game_state::LOAD_GAME_SELECTION:
-        //engine.push_layer(new load_game_selection_layer());
+        engine.push_layer(new example_layer(*this));
         break;
     case game_state::LOADING_GAME:
-        //engine.push_layer(new loading_game_layer());
+        engine.push_layer(new example_layer(*this));
         break;
     case game_state::IN_GAME:
-        engine.push_layer(new example_layer());
-        //engine.push_layer(new game_layer());
+        engine.push_layer(new example_layer(*this));
         break;
     case game_state::EXIT_LOOP:
         // TODO: Exit cleanup

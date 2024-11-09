@@ -15,7 +15,6 @@ public:
         : state_manager(*this)
     {
         state_manager.set_state(game_state::MAIN_MENU);
-        //state_manager.set_state(game_state::IN_GAME);
     }
 
     // TODO: Seems like a good potential for creating event managers for different layers, doing different things
