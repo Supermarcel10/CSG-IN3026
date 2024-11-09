@@ -14,14 +14,14 @@ namespace engine
         {
             clock_wise = 0,
             anticlock_wise
-        }; 
+        };
 
-        enum e_axis 
-        { 
-            x = 0, 
-            y, 
-            z 
-        }; 
+        enum e_axis
+        {
+            x = 0,
+            y,
+            z
+        };
 
     public:
         virtual ~camera() = default;
@@ -44,18 +44,18 @@ namespace engine
 
     class orthographic_camera final : public camera
     {
-    public: 
-        enum e_direction 
-        { 
-            up = 0, 
-            down, 
-            left, 
-            right 
-        }; 
+    public:
+        enum e_direction
+        {
+            up = 0,
+            down,
+            left,
+            right
+        };
 
     public:
         orthographic_camera(float left, float right, float bottom, float top);
-    
+
         void on_update(const timestep& timestep) override{};
 
         glm::vec3 position() const override { return m_position; }
@@ -96,27 +96,31 @@ namespace engine
     //================= 3D CAMERA =================
 
     // Default camera values
-    const float YAW         = -90.0f;
-    const float PITCH       =  0.0f;
-    const float SPEED       =  2.5f;
-    const float SENSITIVITY =  0.1f;
-    const float ZOOM        =  45.0f;
+    const bool ISOMETRIC            =  true;
+
+    const float YAW                 = -90.0f;
+    const float PITCH               =  0.0f;
+    const float ISO_YAW             = -45.0f;
+    const float ISO_PITCH           =  35.264f;
+    const float SPEED               =  2.5f;
+    const float SENSITIVITY         =  0.1f;
+    const float ZOOM                =  45.0f;
 
     class perspective_camera : public camera
     {
     public:
-        enum e_direction 
-        { 
-            forward = 0, 
-            backward, 
-            left, 
-            right 
+        enum e_direction
+        {
+            forward = 0,
+            backward,
+            left,
+            right
         };
 
-    public: 
-        perspective_camera( 
-            float width, float height,  
-            float fov = 45.f,  
+    public:
+        perspective_camera(
+            float width, float height,
+            float fov = 45.f,
             float near_z = 0.1f, float far_z = 100.f);
 
         void on_update(const timestep& timestep) override;
@@ -124,7 +128,7 @@ namespace engine
         glm::vec3 position() const override { return m_position; }
         void position(const glm::vec3& pos) override { m_position = pos; update_view_matrix(); }
 
-        float movement_speed() const override { return s_movement_speed; } 
+        float movement_speed() const override { return s_movement_speed; }
         float rotation_speed() const override { return s_rotation_speed; }
 
 		void set_movement_speed(float move_speed) override {s_movement_speed = move_speed; }
@@ -134,51 +138,51 @@ namespace engine
 		glm::vec3   up_vector() const { return m_up_vector; }
 		glm::vec3   right_vector() const { return m_right_vector; }
 
-        const glm::mat4& projection_matrix() const override; 
-        const glm::mat4& view_matrix() const override; 
+        const glm::mat4& projection_matrix() const override;
+        const glm::mat4& view_matrix() const override;
         const glm::mat4& view_projection_matrix() const override;
 
 		void set_view_matrix(glm::vec3 position, glm::vec3 look_at);
 
-    private: 
+    private:
         void process_mouse(float mouse_delta_x, float mouse_delta_y, bool constrain_pitch = true);
-        void move(e_direction direction, timestep ts); 
+        void move(e_direction direction, timestep ts);
         void rotate(e_rotation rotation, e_axis rotation_axis, timestep ts);
         void update_camera_vectors();
-        void update_view_matrix(); 
+        void update_view_matrix();
 
-    private: 
-        glm::mat4   m_projection_mat{1}; 
-        glm::mat4   m_view_mat{1}; 
-        glm::mat4   m_view_projection_mat{1}; 
+    private:
+        glm::mat4   m_projection_mat{1};
+        glm::mat4   m_view_mat{1};
+        glm::mat4   m_view_projection_mat{1};
 
-        glm::vec3   m_position{0.f}; 
-        /// \brief rotation angles for each axis in degrees. 
-        glm::vec3   m_rotation_angle{0.f}; 
+        glm::vec3   m_position{0.f};
+        /// \brief rotation angles for each axis in degrees.
+        glm::vec3   m_rotation_angle{0.f};
 
-        glm::vec3   m_front_vector{0.f,0.f,1.f}; 
-        glm::vec3   m_up_vector{0.f,1.f,0.f}; 
-        glm::vec3   m_right_vector{1.f,0.f,0.f}; 
-        glm::vec3   m_world_up_vector{0.f,1.f,0.f}; 
+        glm::vec3   m_front_vector{0.f,0.f,1.f};
+        glm::vec3   m_up_vector{0.f,1.f,0.f};
+        glm::vec3   m_right_vector{1.f,0.f,0.f};
+        glm::vec3   m_world_up_vector{0.f,1.f,0.f};
 
-        /// \brief 
-        float m_yaw = YAW; 
-        /// \brief 
-        float m_pitch = PITCH; 
-        /// \brief 
-        float m_aspect_ratio = 1.f; 
-        /// \brief Field of view in degrees. 
-        float m_fov = ZOOM; 
-        /// \brief Near clipping plane. 
-        float m_near_plane = 0.1f; 
-        /// \brief ar clipping plane. 
-        float m_far_plane = 100.f; 
+        /// \brief
+        float m_yaw = YAW;
+        /// \brief
+        float m_pitch = PITCH;
+        /// \brief
+        float m_aspect_ratio = 1.f;
+        /// \brief Field of view in degrees.
+        float m_fov = ZOOM;
+        /// \brief Near clipping plane.
+        float m_near_plane = 0.1f;
+        /// \brief ar clipping plane.
+        float m_far_plane = 100.f;
 
-        /// \brief in units per seconds. 
-        inline static float s_movement_speed = SPEED; 
-        /// \brief in degrees per second. 
+        /// \brief in units per seconds.
+        inline static float s_movement_speed = SPEED;
+        /// \brief in degrees per second.
         inline static float s_rotation_speed = 90.f;
-        /// \brief in degrees per second. 
+        /// \brief in degrees per second.
         inline static const float s_mouse_sensitivity = SENSITIVITY;
     };
 
