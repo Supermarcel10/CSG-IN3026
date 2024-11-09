@@ -6,9 +6,10 @@
 #include "engine/events/key_event.h"
 #include "engine/utils/track.h"
 
-example_layer::example_layer() 
-    :m_2d_camera(-1.6f, 1.6f, -0.9f, 0.9f), 
-    m_3d_camera((float)engine::application::window().width(), (float)engine::application::window().height())
+example_layer::example_layer(game_state_manager& state_manager)
+    : controlled_layer(state_manager)
+	, m_2d_camera(-1.6f, 1.6f, -0.9f, 0.9f)
+    , m_3d_camera((float)engine::application::window().width(), (float)engine::application::window().height())
 {
     // Hide the mouse and lock it inside the window
     //engine::input::anchor_mouse(true);

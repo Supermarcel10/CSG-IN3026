@@ -1,10 +1,11 @@
 #pragma once
 #include <engine.h>
 
-class example_layer : public engine::layer
+
+class example_layer : public controlled_layer
 {
 public:
-    example_layer();
+    example_layer(game_state_manager& state_manager);
 	~example_layer();
 
     void on_update(const engine::timestep& time_step) override;
