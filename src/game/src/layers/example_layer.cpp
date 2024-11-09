@@ -3,8 +3,8 @@
 
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp>
-#include "engine/events/key_event.h"
 #include "engine/utils/track.h"
+
 
 example_layer::example_layer(game_state_manager& state_manager)
     : controlled_layer(state_manager)
@@ -52,8 +52,6 @@ example_layer::example_layer(game_state_manager& state_manager)
 	m_mannequin_material = engine::material::create(1.0f, glm::vec3(0.5f, 0.5f, 0.5f),
 		glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f);
 
-
-	// Skybox texture from http://www.vwall.it/wp-content/plugins/canvasio3dpro/inc/resource/cubeMaps/
 	m_skybox = engine::skybox::create(50.f,
 		{ engine::texture_2d::create("assets/textures/skybox/front.jpg", true),
 		  engine::texture_2d::create("assets/textures/skybox/right.jpg", true),
@@ -92,16 +90,27 @@ example_layer::example_layer(game_state_manager& state_manager)
 	terrain_props.restitution = 0.92f;
 	m_terrain = engine::game_object::create(terrain_props);
 
+	// Load the torch model.
+	engine::ref <engine::model> torch_model = engine::model::create("assets/models/buildings/misc/FireTorch.3ds");
+	engine::game_object_properties torch_props;
+	torch_props.meshes = torch_model->meshes();
+	torch_props.textures = torch_model->textures();
+	float torch_scale = 1.f / glm::max(torch_model->size().x, glm::max(torch_model->size().y, torch_model->size().z));
+	torch_props.position = { -4.f, 0.5f, -5.f };
+	torch_props.scale = glm::vec3(torch_scale);
+	torch_props.bounding_shape = torch_model->size() / 2.f * torch_scale;
+	m_torch = engine::game_object::create(torch_props);
+
 	// Load the cow model. Create a cow object. Set its properties
-	engine::ref <engine::model> cow_model = engine::model::create("assets/models/static/cow4.3ds");
-	engine::game_object_properties cow_props;
-	cow_props.meshes = cow_model->meshes();
-	cow_props.textures = cow_model->textures();
-	float cow_scale = 1.f / glm::max(cow_model->size().x, glm::max(cow_model->size().y, cow_model->size().z));
-	cow_props.position = { -4.f,0.5f, -5.f };
-	cow_props.scale = glm::vec3(cow_scale);
-	cow_props.bounding_shape = cow_model->size() / 2.f * cow_scale;
-	m_cow = engine::game_object::create(cow_props);
+//	engine::ref <engine::model> cow_model = engine::model::create("assets/models/static/cow4.3ds");
+//	engine::game_object_properties cow_props;
+//	cow_props.meshes = cow_model->meshes();
+//	cow_props.textures = cow_model->textures();
+//	float cow_scale = 1.f / glm::max(cow_model->size().x, glm::max(cow_model->size().y, cow_model->size().z));
+//	cow_props.position = { -4.f,0.5f, -5.f };
+//	cow_props.scale = glm::vec3(cow_scale);
+//	cow_props.bounding_shape = cow_model->size() / 2.f * cow_scale;
+//	m_cow = engine::game_object::create(cow_props);
 
 	// Load the tree model. Create a tree object. Set its properties
 	engine::ref <engine::model> tree_model = engine::model::create("assets/models/static/elm.3ds");
@@ -127,6 +136,7 @@ example_layer::example_layer(game_state_manager& state_manager)
 	m_game_objects.push_back(m_terrain);
 	m_game_objects.push_back(m_ball);
 	//m_game_objects.push_back(m_cow);
+//	m_game_objects.push_back(m_torch);
 	//m_game_objects.push_back(m_tree);
 	//m_game_objects.push_back(m_pickup);
 	m_physics_manager = engine::bullet_manager::create(m_game_objects);
@@ -138,7 +148,7 @@ example_layer::example_layer(game_state_manager& state_manager)
 
 example_layer::~example_layer() {}
 
-void example_layer::on_update(const engine::timestep& time_step) 
+void example_layer::on_update(const engine::timestep& time_step)
 {
     m_3d_camera.on_update(time_step);
 
@@ -149,11 +159,11 @@ void example_layer::on_update(const engine::timestep& time_step)
 	m_audio_manager->update_with_camera(m_3d_camera);
 
 	check_bounce();
-} 
+}
 
-void example_layer::on_render() 
+void example_layer::on_render()
 {
-    engine::render_command::clear_color({0.2f, 0.3f, 0.3f, 1.0f}); 
+    engine::render_command::clear_color({0.2f, 0.3f, 0.3f, 1.0f});
     engine::render_command::clear();
 
 	// Set up  shader. (renders textures and materials)
@@ -179,12 +189,12 @@ void example_layer::on_render()
 	tree_transform = glm::rotate(tree_transform, m_tree->rotation_amount(), m_tree->rotation_axis());
 	tree_transform = glm::scale(tree_transform, m_tree->scale());
 	engine::renderer::submit(mesh_shader, tree_transform, m_tree);
-	
-	glm::mat4 cow_transform(1.0f);
-	cow_transform = glm::translate(cow_transform, m_cow->position());
-	cow_transform = glm::rotate(cow_transform, m_cow->rotation_amount(), m_cow->rotation_axis());
-	cow_transform = glm::scale(cow_transform, m_cow->scale());
-	engine::renderer::submit(mesh_shader, cow_transform, m_cow);
+
+	//glm::mat4 cow_transform(1.0f);
+	//cow_transform = glm::translate(cow_transform, m_cow->position());
+	//cow_transform = glm::rotate(cow_transform, m_cow->rotation_amount(), m_cow->rotation_axis());
+	//cow_transform = glm::scale(cow_transform, m_cow->scale());
+	//engine::renderer::submit(mesh_shader, cow_transform, m_cow);
 
 	m_material->submit(mesh_shader);
 	engine::renderer::submit(mesh_shader, m_ball);
@@ -193,22 +203,28 @@ void example_layer::on_render()
 	engine::renderer::submit(mesh_shader, m_mannequin);
 
     engine::renderer::end_scene();
-
-	// Render text
-	m_text_manager->render_text("The quick brown fox jumps over the lazy dog", 10.f, (float)engine::application::window().height() / 6.f * 2.f, 0.5f, glm::vec4(1.f, 0.5f, 0.f, 1.f), "assets/fonts/Regular.ttf");
-	m_text_manager->render_text("The quick brown fox jumps over the lazy dog", 10.f, (float)engine::application::window().height() / 6.f * 3.f, 0.5f, glm::vec4(1.f, 0.5f, 0.f, 1.f), "assets/fonts/Title.ttf");
 }
 
-void example_layer::on_event(engine::event& event) 
+void example_layer::on_event(engine::event& e)
 {
-    if(event.event_type() == engine::event_type_e::key_pressed) 
-    {
-        auto& e = dynamic_cast<engine::key_pressed_event&>(event); 
-        if(e.key_code() == engine::key_codes::KEY_TAB) 
-        { 
-            engine::render_command::toggle_wireframe();
-        }
-    }
+	if (auto keyEvent = dynamic_cast<engine::key_pressed_event*>(&e))
+	{
+		handle_key_event(*keyEvent);
+	}
+}
+
+void example_layer::handle_key_event(engine::key_pressed_event& e) {
+	auto key_code = e.key_code();
+
+	if (key_code == engine::key_codes::KEY_ESCAPE || key_code == engine::key_codes::KEY_SPACE)
+	{
+		// Determine if game should pause or unpause
+		const auto new_state = state_manager.get_progress_state() == game_progress_state::PAUSED
+			? game_progress_state::PEACE // TODO: Figure out how to store previous state before pause.
+			: game_progress_state::PAUSED;
+
+		state_manager.set_progress_state(new_state);
+	}
 }
 
 void example_layer::check_bounce()

@@ -1,23 +1,16 @@
 #pragma once
 #include <engine.h>
+#include "engine/events/key_event.h"
+#include "../controlled_layer.h"
 
 
 class example_layer : public controlled_layer
 {
-public:
-    example_layer(game_state_manager& state_manager);
-	~example_layer();
-
-    void on_update(const engine::timestep& time_step) override;
-    void on_render() override; 
-    void on_event(engine::event& event) override;
-
 private:
-	void check_bounce();
-
 	engine::ref<engine::skybox>			m_skybox{};
 	engine::ref<engine::game_object>	m_terrain{};
-	engine::ref<engine::game_object>	m_cow{};
+	engine::ref<engine::game_object>	m_torch{};
+	//engine::ref<engine::game_object>	m_cow{};
 	engine::ref<engine::game_object>	m_tree{};
 	engine::ref<engine::game_object>	m_ball{};
 	engine::ref<engine::game_object>	m_mannequin{};
@@ -34,6 +27,18 @@ private:
 	float								m_prev_sphere_y_vel = 0.f;
 	engine::ref<engine::text_manager>	m_text_manager{};
 
-    engine::orthographic_camera       m_2d_camera; 
-    engine::perspective_camera        m_3d_camera;
+	engine::orthographic_camera       m_2d_camera;
+	engine::perspective_camera        m_3d_camera;
+
+public:
+    example_layer(game_state_manager& state_manager);
+	~example_layer();
+
+    void on_update(const engine::timestep& time_step) override;
+    void on_render() override; 
+    void on_event(engine::event& event) override;
+
+private:
+	void check_bounce();
+	void handle_key_event(engine::key_pressed_event& e);
 };
