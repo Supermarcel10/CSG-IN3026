@@ -1,5 +1,21 @@
 # CSG-IN3026
 
+<!-- TOC -->
+* [CSG-IN3026](#csg-in3026)
+    * [Game Idea](#game-idea)
+    * [Reports](#reports)
+    * [Usages](#usages)
+      * [Symbol Definitions](#symbol-definitions)
+      * [Usage Table](#usage-table)
+<!-- TOC -->
+
+### Game Idea
+
+### Reports
+
+Milestone 1 Report [PDF](docs/report/Milestone1.pdf) [DOCX](docs/report/Milestone1.docx)<br/>
+~~Milestone 2 Report [PDF](docs/report/Milestone2.pdf) [DOCX](docs/report/Milestone2.docx)~~
+
 ### Usages
 #### Symbol Definitions
 | Symbol | Meaning                          |
