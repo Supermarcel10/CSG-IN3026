@@ -54,13 +54,21 @@ void main_menu::on_render()
 	const float x = window_x / 100.f;
 	const float y = window_y / 100.f;
 
-	//#050a0c 5, 10, 12
+	//#050a0c (5, 10, 12)
 	const glm::vec4 title_color = glm::vec4(
 		(float) 5 / 255,
 		(float) 10 / 255,
 		(float) 12 / 255,
 		1.f
 	);
+
+    //#050a0c (5, 10, 12)
+    const glm::vec4 tooltip_color = glm::vec4(
+            (float) 5 / 255,
+            (float) 10 / 255,
+            (float) 12 / 255,
+            1.f
+    );
 
 	const glm::vec4 button_unselected_color = glm::vec4(.5f, .5f, .5f, 1.f);
 	const glm::vec4 button_selected_color = glm::vec4(0.f, 0.f, 0.f, 1.f);
@@ -80,8 +88,10 @@ void main_menu::on_render()
 		m_text_manager->render_text(button_text, x * 10.f, y * y_translate, 1.f, color_to_use, "assets/fonts/Title.ttf");
 	}
 
+    m_text_manager->render_text("W/S - Selection Up/Down", x * 10.f, y * 5.f, .33f, tooltip_color, "assets/fonts/Title.ttf");
+    m_text_manager->render_text("SPACE - Select", x * 30.f, y * 5.f, .33f, tooltip_color, "assets/fonts/Title.ttf");
+
 	// TODO: Add mouse support somehow
-	// TODO: Add tooltips?
 }
 
 void main_menu::on_event(engine::event& e)
