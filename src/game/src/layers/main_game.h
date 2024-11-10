@@ -16,6 +16,7 @@ private:
     engine::ref<engine::game_object>	m_tree{};
     engine::ref<engine::game_object>	m_ball{};
     engine::ref<engine::game_object>    m_rock{};
+    engine::ref<engine::material>       rock_material{};
     engine::ref<engine::game_object>	m_mannequin{};
 
     engine::ref<engine::material>		m_material{};

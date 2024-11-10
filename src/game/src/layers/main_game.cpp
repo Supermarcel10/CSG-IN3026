@@ -144,8 +144,42 @@ main_game::main_game(game_state_manager& state_manager)
     sphere_props.mass = 0.000001f;
     m_ball = engine::game_object::create(sphere_props);
 
+    // ROCK
+
+    //#494949 (73, 73, 73)
+    //#898989 rgb(137, 137, 137)
+    //#afafaf rgb(175, 175, 175)
+    //#c1c1c1 rgb(193, 193, 193)
+    rock_material = engine::material::create(
+            0.0f,
+            glm::vec3(
+                    (float) 73 / 255,
+                    (float) 73 / 255,
+                    (float) 73 / 255), // Unlit color
+            glm::vec3(
+                    (float) 137 / 255,
+                    (float) 137 / 255,
+                    (float) 137 / 255), // Direct color
+            glm::vec3(
+                    (float) 193 / 255,
+                    (float) 193 / 255,
+                    (float) 193 / 255), // Shine
+            1.0f
+    );
+
+    auto rock_shape = engine::rock::create(.8f, 20, .2f);
+    engine::game_object_properties rock_props;
+    rock_props.position = { 2.5f, 0.f, 2.5f };
+    rock_props.meshes = { rock_shape->mesh() };
+    rock_props.bounding_shape = glm::vec3(0.5f);
+    rock_props.is_static = true;
+    m_rock = engine::game_object::create(rock_props);
+
+
+    // BINDING OBJECTS
     objects.push_back(m_terrain);
     objects.push_back(m_ball);
+    objects.push_back(m_rock);
     objects.push_back(m_torch);
     objects.push_back(m_tree);
 
@@ -206,6 +240,10 @@ void main_game::on_render()
 
     m_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_ball);
+
+    rock_material->submit(mesh_shader);
+    engine::renderer::submit(mesh_shader, m_rock);
+
 
     m_mannequin_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_mannequin);
