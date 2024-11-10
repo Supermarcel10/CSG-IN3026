@@ -54,8 +54,6 @@ main_game::main_game(game_state_manager& state_manager)
     std::dynamic_pointer_cast<engine::gl_shader>(text_shader)->set_uniform("projection",
                                                                            glm::ortho(0.f, (float)engine::application::window().width(), 0.f,
                                                                                       (float)engine::application::window().height()));
-    m_material = engine::material::create(1.0f, glm::vec3(1.0f, 0.1f, 0.07f),
-                                          glm::vec3(1.0f, 0.1f, 0.07f), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f);
 
     m_mannequin_material = engine::material::create(1.0f, glm::vec3(0.5f, 0.5f, 0.5f),
                                                     glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f);
@@ -140,6 +138,9 @@ main_game::main_game(game_state_manager& state_manager)
 
 
     // SPHERE
+
+    ball_material = engine::material::create(1.0f, glm::vec3(1.0f, 0.1f, 0.07f),
+                                             glm::vec3(1.0f, 0.1f, 0.07f), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f);
 
     auto sphere_shape = engine::sphere::create(10, 20, 0.5f);
     engine::game_object_properties sphere_props;
@@ -242,7 +243,7 @@ void main_game::on_render()
     tree_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, tree_transform, m_tree);
 
-    m_material->submit(mesh_shader);
+    ball_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_ball);
 
     rock_material->submit(mesh_shader);

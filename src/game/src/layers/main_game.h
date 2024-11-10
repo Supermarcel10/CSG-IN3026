@@ -12,8 +12,11 @@ private:
 
     engine::ref<engine::skybox>			m_skybox{};
     engine::ref<engine::game_object>	m_terrain{};
+
     engine::ref<engine::game_object>	m_torch{};
+
     engine::ref<engine::game_object>	m_ball{};
+    engine::ref<engine::material>		ball_material{};
 
     engine::ref<engine::game_object>	m_mannequin{};
     engine::ref<engine::material>		m_mannequin_material{};
@@ -24,7 +27,6 @@ private:
     engine::ref<engine::game_object>    m_rock{};
     engine::ref<engine::material>       rock_material{};
 
-    engine::ref<engine::material>		m_material{};
 
     engine::DirectionalLight            m_directionalLight;
 
