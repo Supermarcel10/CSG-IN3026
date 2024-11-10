@@ -2,14 +2,22 @@
 
 <!-- TOC -->
 * [CSG-IN3026](#csg-in3026)
-    * [Game Idea](#game-idea)
+    * [Documentation](#documentation)
+      * [Design](#design)
+      * [Development](#development)
     * [Reports](#reports)
     * [Usages](#usages)
       * [Symbol Definitions](#symbol-definitions)
       * [Usage Table](#usage-table)
 <!-- TOC -->
 
-### Game Idea
+### Documentation
+#### Design
+[Brainstorming Ideas](docs/design/brainstorming-ideas.md)<br/>
+[Design](docs/design/design.md)<br/>
+
+#### Development
+[Engine Shortcomings](docs/development/engine-shortcomings.md)<br/>
 
 ### Reports
 
@@ -37,8 +45,8 @@ Milestone 1 Report [PDF](docs/report/Milestone1.pdf) [DOCX](docs/report/Mileston
 |  Model   |       [Low Poly Pine Trees](src/game/assets/models/resources/tree)        |                                                  [Source](https://theteaguns.itch.io/low-poly-pine-trees)                                                   |       ✔️*        |        ✔️*         |         Attribute          |  CC BY 4.0  |                                                         |
 |  Model   |            [Low Poly Cloud](src/game/assets/models/misc/cloud)            |                                           [Source](https://crazy-potato-game-studio.itch.io/low-poly-nature-pack)                                           |        ✔️        |         ✔️         |                            |     CC0     |                                                         |
 |  Model   |          [Low Poly Islands](src/game/assets/models/misc/island)           |                                [Source](https://poly.pizza/m/C03O8OQq6O) + 2 variants from the same author and same licence                                 |       ✔️*        |        ✔️*         |         Attribute          |  CC BY 3.0  |                                                         |
-|  Model   |          [Low Poly Buildings](src/game/assets/models/buildings)           |                                                [Source](https://kaylousberg.itch.io/kaykit-medieval-hexagon)                                                |        ✔️        |         ✔️         |                            |             |                                                         |
-|          |                                                                           |                                                                                                                                                             |                  |                    |                            |     CC0     | Combined, grouped & renamed files to reduce duplication |
+|  Model   |        [kaykit-medieval-hexagon](src/game/assets/models/buildings)        |                                                [Source](https://kaylousberg.itch.io/kaykit-medieval-hexagon)                                                |        ✔️        |         ✔️         |                            |     CC0     | Combined, grouped & renamed files to reduce duplication |
+|          |                                                                           |                                                                                                                                                             |                  |                    |                            |             |                                                         |
 |          |                                                                           |                                                                                                                                                             |                  |                    |                            |             |                                                         |
 |          |                                                                           |                                                                                                                                                             |                  |                    |                            |             |                                                         |
 |          |                                                                           |                                                                                                                                                             |                  |                    |                            |             |                                                         |
