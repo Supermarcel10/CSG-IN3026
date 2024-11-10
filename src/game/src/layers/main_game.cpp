@@ -125,12 +125,11 @@ main_game::main_game(game_state_manager& state_manager)
     auto tree_model = engine::model::create("assets/models/resources/tree/PineTree1.fbx");
     engine::game_object_properties tree_props;
     tree_props.meshes = tree_model->meshes();
-//    tree_props.textures = tree_model->textures();
     tree_props.textures = tree_textures;
     tree_props.rotation_axis = glm::vec3(-1.f, 0.f, 0.f);
     tree_props.rotation_amount = glm::radians(90.0f);
     float tree_scale = 3.f / glm::max(tree_model->size().x, glm::max(tree_model->size().y, tree_model->size().z));
-    tree_props.position = { 0.f, 0.5f, -0.f };
+    tree_props.position = { 0.f, 0.5f, 0.f };
     tree_props.bounding_shape = tree_model->size() / 2.f * tree_scale;
     tree_props.scale = glm::vec3(tree_scale);
     tree_props.is_static = true;
