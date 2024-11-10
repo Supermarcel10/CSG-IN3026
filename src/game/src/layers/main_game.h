@@ -10,13 +10,18 @@ private:
     std::vector<engine::ref<engine::game_object>> objects{};
     std::vector<engine::ref<engine::game_object>> collidable_objects{}; // TODO: Look into generalising this in a more efficient manner
 
+    // TODO: Look into writing a more generic way of creating some of these objects multiple times in an easier manner. Something along prefabs like in other engines?
     engine::ref<engine::skybox>			m_skybox{};
     engine::ref<engine::game_object>	m_terrain{};
 
     engine::ref<engine::game_object>    m_cloud{};
     engine::ref<engine::material>		cloud_material{};
 
-    engine::ref<engine::game_object>	m_torch{};
+//    engine::ref<engine::game_object>	m_island{};
+//    engine::ref<engine::material>       island_material{};
+
+    engine::ref<engine::game_object>	m_house{};
+    engine::ref<engine::material>		house_material{};
 
     engine::ref<engine::game_object>	m_ball{};
     engine::ref<engine::material>		ball_material{};

@@ -127,18 +127,59 @@ main_game::main_game(game_state_manager& state_manager)
     m_cloud = engine::game_object::create(cloud_props);
 
 
-    // TORCH
-    // TODO: Light and fire FX
-    auto torch_model = engine::model::create("assets/models/buildings/misc/FireTorch.3ds");
-    engine::game_object_properties torch_props;
-    torch_props.meshes = torch_model->meshes();
-    torch_props.textures = torch_model->textures();
-    float torch_scale = 1.f / glm::max(torch_model->size().x, glm::max(torch_model->size().y, torch_model->size().z));
-    torch_props.position = { 0.f, 0.f, -.2f };
-    torch_props.scale = glm::vec3(torch_scale);
-    torch_props.bounding_shape = torch_model->size() / 2.f * torch_scale;
-    m_torch = engine::game_object::create(torch_props);
+    // ISLAND
 
+//    std::vector<engine::ref<engine::texture_2d>> island_textures;
+//    // TODO: Add MTL support for this to actually work as intended.
+//    island_textures.push_back(engine::texture_2d::create("assets/models/misc/island/Island01.mtl", false));
+//
+//    island_material = engine::material::create(
+//            32.0f,
+//            glm::vec3(1.0f),
+//            glm::vec3(1.0f),
+//            glm::vec3(0.1f),
+//            1.0f
+//    );
+//
+//    auto island_model = engine::model::create("assets/models/misc/island/Island01.obj");
+//    engine::game_object_properties island_props;
+//    island_props.meshes = island_model->meshes();
+//    island_props.textures = island_model->textures();
+////    island_props.rotation_axis = glm::vec3(-1.f, 0.f, 0.f);
+////    island_props.rotation_amount = glm::radians(90.0f);
+//    float island_scale = 1.f / glm::max(island_model->size().x, glm::max(island_model->size().y, island_model->size().z));
+//    island_props.position = { 0.f, 0.5f, 0.f };
+//    island_props.bounding_shape = island_model->size() / 2.f * island_scale;
+//    island_props.scale = glm::vec3(island_scale);
+//    island_props.is_static = true;
+//    m_island = engine::game_object::create(island_props);
+
+
+    // HOUSE
+
+    std::vector<engine::ref<engine::texture_2d>> house_textures;
+    house_textures.push_back(engine::texture_2d::create("assets/models/buildings/blue.png", false));
+
+    house_material = engine::material::create(
+            32.0f,
+            glm::vec3(1.0f),
+            glm::vec3(1.0f),
+            glm::vec3(0.1f),
+            1.0f
+    );
+
+    auto house_model = engine::model::create("assets/models/buildings/home_A.fbx");
+    engine::game_object_properties house_props;
+    house_props.meshes = house_model->meshes();
+    house_props.textures = house_textures;
+    house_props.rotation_axis = glm::vec3(-1.f, 0.f, 0.f);
+    house_props.rotation_amount = glm::radians(90.0f);
+    float house_scale = 3.f / glm::max(house_model->size().x, glm::max(house_model->size().y, house_model->size().z));
+    house_props.position = { 0.f, 0.5f, 0.f };
+    house_props.bounding_shape = house_model->size() / 2.f * house_scale;
+    house_props.scale = glm::vec3(house_scale);
+    house_props.is_static = true;
+    m_house = engine::game_object::create(house_props);
 
     // TREE
 
@@ -219,10 +260,11 @@ main_game::main_game(game_state_manager& state_manager)
     objects.push_back(m_terrain);
     objects.push_back(m_ball);
     objects.push_back(m_rock);
-    objects.push_back(m_torch);
+//    objects.push_back(m_island);
     objects.push_back(m_tree);
 
     collidable_objects.push_back(m_terrain);
+//    collidable_objects.push_back(m_island);
     collidable_objects.push_back(m_ball);
     m_physics_manager = engine::bullet_manager::create(collidable_objects);
 
@@ -278,6 +320,12 @@ void main_game::on_render()
 
     rock_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_rock);
+
+//    island_material->submit(mesh_shader);
+//    engine::renderer::submit(mesh_shader, m_island);
+
+    house_material->submit(mesh_shader);
+    engine::renderer::submit(mesh_shader, m_house);
 
     cloud_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_cloud);
