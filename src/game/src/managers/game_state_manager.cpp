@@ -1,13 +1,16 @@
 #include "game_state_manager.h"
 
-#include "../layers/example_layer.h"
 #include "../layers/main_menu.h"
+#include "../layers/main_game.h"
+//#include "../layers/pause_menu.h"
+//#include "../layers/game_play.h"
 
 
 game_state_manager::game_state_manager(engine::application& engine)
-    : engine(engine), current_state(game_state::MAIN_MENU), current_progress_state(game_progress_state::NOT_IN_GAME)
-{
-}
+    : engine(engine)
+    , current_state(game_state::MAIN_MENU)
+    , current_progress_state(game_progress_state::NOT_IN_GAME)
+{}
 
 void game_state_manager::set_state(game_state new_state) {
     current_state = new_state;
@@ -16,6 +19,7 @@ void game_state_manager::set_state(game_state new_state) {
 
 void game_state_manager::set_progress_state(game_progress_state new_state) {
     current_progress_state = new_state;
+    //engine.push_overlay(new pause_menu(*this));
 }
 
 game_state game_state_manager::get_state() const {
@@ -32,19 +36,19 @@ void game_state_manager::push_new_layer() {
         engine.push_layer(new main_menu(*this));
         break;
     case game_state::OPTIONS:
-        engine.push_layer(new example_layer(*this));
+        engine.push_layer(new main_game(*this));
         break;
     case game_state::NEW_GAME_SETUP:
-        engine.push_layer(new example_layer(*this));
+        engine.push_layer(new main_game(*this));
         break;
     case game_state::LOAD_GAME_SELECTION:
-        engine.push_layer(new example_layer(*this));
+        engine.push_layer(new main_game(*this));
         break;
     case game_state::LOADING_GAME:
-        engine.push_layer(new example_layer(*this));
+        engine.push_layer(new main_game(*this));
         break;
     case game_state::IN_GAME:
-        engine.push_layer(new example_layer(*this));
+        engine.push_layer(new main_game(*this));
         break;
     case game_state::EXIT_LOOP:
         // TODO: Exit cleanup
