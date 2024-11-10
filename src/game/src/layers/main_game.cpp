@@ -112,16 +112,34 @@ main_game::main_game(game_state_manager& state_manager)
     torch_props.bounding_shape = torch_model->size() / 2.f * torch_scale;
     m_torch = engine::game_object::create(torch_props);
 
-    // Load the tree model. Create a tree object. Set its properties
-    auto tree_model = engine::model::create("assets/models/static/elm.3ds");
+    // TREE
+    std::vector<engine::ref<engine::texture_2d>> tree_textures;
+    tree_textures.push_back(engine::texture_2d::create("assets/models/resources/tree/PineTexture.png", false));
+
+    tree_material = engine::material::create(
+            32.0f,
+            glm::vec3(1.0f),
+            glm::vec3(1.0f),
+            glm::vec3(0.1f),
+            1.0f
+    );
+
+    auto tree_model = engine::model::create("assets/models/resources/tree/PineTree1.fbx");
     engine::game_object_properties tree_props;
     tree_props.meshes = tree_model->meshes();
-    tree_props.textures = tree_model->textures();
+//    tree_props.textures = tree_model->textures();
+    tree_props.textures = tree_textures;
+    tree_props.rotation_axis = glm::vec3(-1.f, 0.f, 0.f);
+    tree_props.rotation_amount = glm::radians(90.0f);
     float tree_scale = 3.f / glm::max(tree_model->size().x, glm::max(tree_model->size().y, tree_model->size().z));
     tree_props.position = { 0.f, 0.5f, -0.f };
     tree_props.bounding_shape = tree_model->size() / 2.f * tree_scale;
     tree_props.scale = glm::vec3(tree_scale);
+    tree_props.is_static = true;
     m_tree = engine::game_object::create(tree_props);
+
+
+    // SPHERE
 
     auto sphere_shape = engine::sphere::create(10, 20, 0.5f);
     engine::game_object_properties sphere_props;
@@ -132,6 +150,7 @@ main_game::main_game(game_state_manager& state_manager)
     sphere_props.restitution = 0.92f;
     sphere_props.mass = 0.000001f;
     m_ball = engine::game_object::create(sphere_props);
+
 
     // ROCK
 
@@ -219,6 +238,8 @@ void main_game::on_render()
     tree_transform = glm::translate(tree_transform, glm::vec3(4.f, 0.5, -5.0f));
     tree_transform = glm::rotate(tree_transform, m_tree->rotation_amount(), m_tree->rotation_axis());
     tree_transform = glm::scale(tree_transform, m_tree->scale());
+
+    tree_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, tree_transform, m_tree);
 
     m_material->submit(mesh_shader);

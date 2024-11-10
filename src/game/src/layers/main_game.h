@@ -13,17 +13,20 @@ private:
     engine::ref<engine::skybox>			m_skybox{};
     engine::ref<engine::game_object>	m_terrain{};
     engine::ref<engine::game_object>	m_torch{};
-    engine::ref<engine::game_object>	m_tree{};
     engine::ref<engine::game_object>	m_ball{};
-    engine::ref<engine::game_object>    m_rock{};
-    engine::ref<engine::material>       rock_material{};
-    engine::ref<engine::game_object>	m_mannequin{};
 
-    engine::ref<engine::material>		m_material{};
+    engine::ref<engine::game_object>	m_mannequin{};
     engine::ref<engine::material>		m_mannequin_material{};
 
-    engine::DirectionalLight            m_directionalLight;
+    engine::ref<engine::game_object>    m_tree{};
+    engine::ref<engine::material>       tree_material{};
 
+    engine::ref<engine::game_object>    m_rock{};
+    engine::ref<engine::material>       rock_material{};
+
+    engine::ref<engine::material>		m_material{};
+
+    engine::DirectionalLight            m_directionalLight;
 
     engine::ref<engine::bullet_manager> m_physics_manager{};
     engine::ref<engine::audio_manager>  m_audio_manager{};
