@@ -349,11 +349,8 @@ void main_game::handle_key_event(engine::key_pressed_event& e) {
 
     if (key_code == engine::key_codes::KEY_ESCAPE || key_code == engine::key_codes::KEY_SPACE)
     {
-        // Determine if game should pause or unpause
-        const auto new_state = state_manager.get_progress_state() == game_progress_state::PAUSED
-                               ? game_progress_state::PEACE // TODO: Figure out how to store previous state before pause.
-                               : game_progress_state::PAUSED;
-
-        state_manager.set_progress_state(new_state);
+        // TODO: Investigate issue where pause menu is not triggered first time.
+        // Debounce issue?
+        state_manager.toggle_pause();
     }
 }
