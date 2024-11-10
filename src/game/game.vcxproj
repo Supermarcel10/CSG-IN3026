@@ -134,13 +134,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\controlled_layer.h" />
-    <ClInclude Include="src\layers\example_layer.h" />
     <ClInclude Include="src\layers\main_game.h" />
     <ClInclude Include="src\layers\main_menu.h" />
     <ClInclude Include="src\managers\game_state_manager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\layers\example_layer.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\layers\main_game.cpp" />
     <ClCompile Include="src\layers\main_menu.cpp" />
