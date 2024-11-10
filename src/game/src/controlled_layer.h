@@ -9,7 +9,7 @@ protected:
 	game_state_manager& state_manager;
 
 public:
-	controlled_layer(game_state_manager state_manager)
+	controlled_layer(game_state_manager& state_manager)
 		: engine::layer()
 		, state_manager(state_manager)
 	{}

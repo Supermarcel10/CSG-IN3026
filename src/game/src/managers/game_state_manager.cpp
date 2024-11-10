@@ -12,7 +12,12 @@ game_state_manager::game_state_manager(engine::application& engine)
     , current_progress_state(game_progress_state::NOT_IN_GAME)
 {}
 
+game_state_manager::~game_state_manager() {
+    clear_current_layer();
+}
+
 void game_state_manager::set_state(game_state new_state) {
+    clear_current_layer();
     current_state = new_state;
     push_new_layer();
 }
@@ -31,28 +36,42 @@ game_progress_state game_state_manager::get_progress_state() const {
 }
 
 void game_state_manager::push_new_layer() {
+    engine::layer* new_layer = nullptr;
+
     switch (current_state) {
     case game_state::MAIN_MENU:
-        engine.push_layer(new main_menu(*this));
+        new_layer = new main_menu(*this);
         break;
     case game_state::OPTIONS:
-        engine.push_layer(new main_game(*this));
+        new_layer = new main_game(*this);
         break;
     case game_state::NEW_GAME_SETUP:
-        engine.push_layer(new main_game(*this));
+        new_layer = new main_game(*this);
         break;
     case game_state::LOAD_GAME_SELECTION:
-        engine.push_layer(new main_game(*this));
+        new_layer = new main_game(*this);
         break;
     case game_state::LOADING_GAME:
-        engine.push_layer(new main_game(*this));
+        new_layer = new main_game(*this);
         break;
     case game_state::IN_GAME:
-        engine.push_layer(new main_game(*this));
+        new_layer = new main_game(*this);
         break;
     case game_state::EXIT_LOOP:
-        // TODO: Exit cleanup
         engine.exit();
         break;
+    }
+
+    if (new_layer) {
+        m_current_layer = new_layer;
+        engine.push_layer(new_layer);
+    }
+}
+
+void game_state_manager::clear_current_layer() {
+    if (m_current_layer) {
+        engine.pop_layer(m_current_layer);
+        delete m_current_layer;
+        m_current_layer = nullptr;
     }
 }

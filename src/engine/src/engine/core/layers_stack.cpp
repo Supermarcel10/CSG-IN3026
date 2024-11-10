@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "layers_stack.h"
 
 engine::layers_stack::~layers_stack()

@@ -26,15 +26,18 @@ private:
     game_state current_state;
     game_progress_state current_progress_state;
     engine::application& engine;
+    engine::layer* m_current_layer = nullptr;
 
 public:
     game_state_manager(engine::application& engine);
+    ~game_state_manager();
 
     void set_state(game_state new_state);
     void set_progress_state(game_progress_state new_state);
 
     game_state get_state() const;
     game_progress_state get_progress_state() const;
+    void clear_current_layer();
 
 private:
     void push_new_layer();

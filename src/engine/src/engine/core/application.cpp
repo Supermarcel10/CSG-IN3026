@@ -4,13 +4,13 @@
 #include "GLFW/glfw3.h"
 #include "engine/utils/timer.h"
 
-//----------------------------------------------------------------------------- 
+//-----------------------------------------------------------------------------
 
-engine::application* engine::application::s_instance{ nullptr }; 
-bool engine::application::s_running{ true }; 
-bool engine::application::s_minimized{ false }; 
+engine::application* engine::application::s_instance{ nullptr };
+bool engine::application::s_running{ true };
+bool engine::application::s_minimized{ false };
 
-//----------------------------------------------------------------------------- 
+//-----------------------------------------------------------------------------
 
 engine::application::application()
 {
@@ -45,44 +45,55 @@ void engine::application::run()
 	}
 }
 
-void engine::application::on_event(event& event) 
-{ 
-    event_dispatcher dispatcher(event); 
-    // dispatch event on window X pressed 
-    dispatcher.dispatch<window_closed_event>(BIND_EVENT_FN(application::on_window_close)); 
-    dispatcher.dispatch<window_resize_event>(BIND_EVENT_FN(application::on_window_resized)); 
+void engine::application::on_event(event& event)
+{
+    event_dispatcher dispatcher(event);
+    // dispatch event on window X pressed
+    dispatcher.dispatch<window_closed_event>(BIND_EVENT_FN(application::on_window_close));
+    dispatcher.dispatch<window_resize_event>(BIND_EVENT_FN(application::on_window_resized));
 
-    //LOG_CORE_TRACE("{0}", event); 
+    //LOG_CORE_TRACE("{0}", event);
 
-    // events are executed from top of the stack to bottom (aka end to start of the list) 
-    for (auto it = m_layers_stack.end(); it != m_layers_stack.begin(); ) 
-    { 
-        (*--it)->on_event(event); 
-        // stop event propagation to next layer if flagged as handled 
-        if (event.handled) 
-            break; 
-    } 
-} 
+    // events are executed from top of the stack to bottom (aka end to start of the list)
+    for (int i = m_layers_stack.layer_size() - 1; i >= 0; --i)
+    {
+        auto* current_layer = m_layers_stack.get_layer(i);
+        // Check if layer stack changed between iteration
+        if (!current_layer)
+            continue;
 
-void engine::application::push_layer(layer* layer) 
-{ 
-    m_layers_stack.push_layer(layer); 
-} 
+        current_layer->on_event(event);
 
-void engine::application::push_overlay(layer* overlay) 
-{ 
-    m_layers_stack.push_overlay(overlay); 
-} 
+        // stop event propagation to next layer if flagged as handled
+        if (event.handled)
+            break;
+    }
+}
 
-bool engine::application::on_window_close(window_closed_event&) 
-{ 
-    exit(); 
+void engine::application::push_layer(layer* layer)
+{
+    m_layers_stack.push_layer(layer);
+}
+
+void engine::application::pop_layer(layer* layer)
+{
+    m_layers_stack.pop_layer(layer);
+}
+
+void engine::application::push_overlay(layer* overlay)
+{
+    m_layers_stack.push_overlay(overlay);
+}
+
+bool engine::application::on_window_close(window_closed_event&)
+{
+    exit();
     const bool event_handled = false;
-    return event_handled; 
-} 
+    return event_handled;
+}
 
-bool engine::application::on_window_resized(window_resize_event &e) 
-{ 
+bool engine::application::on_window_resized(window_resize_event &e)
+{
     if(e.height() == 0 || e.width() == 0)
     {
         application::s_minimized = true;
@@ -93,10 +104,10 @@ bool engine::application::on_window_resized(window_resize_event &e)
     render_command::resize_viewport(0, 0, e.width(), e.height());
 
     const bool event_handled = false;
-    return event_handled; 
-} 
+    return event_handled;
+}
 
-void engine::application::exit() 
-{ 
-    s_running = false; 
-} 
+void engine::application::exit()
+{
+    s_running = false;
+}

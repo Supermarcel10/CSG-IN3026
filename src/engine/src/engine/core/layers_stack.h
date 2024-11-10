@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "engine/core.h"
 #include "layer.h"
@@ -22,6 +22,17 @@ namespace engine
         void pop_layer(layer* layer);
         /// \brief Removes the overlay from the layers_stack. Overlay won't be deleted.
         void pop_overlay(layer* overlay);
+
+        size_t engine::layers_stack::layer_size()
+        {
+            return m_layers.size();
+        }
+
+        engine::layer* get_layer(size_t index) {
+            if (index < m_layers.size())
+                return m_layers[index];
+            return nullptr;
+        }
 
         // To iterate through a range-based for-loop [i.e. for( auto elem : elements)]
         /// \brief Implicit implementation of .begin()

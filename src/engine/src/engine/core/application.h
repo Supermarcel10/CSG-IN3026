@@ -25,6 +25,7 @@ namespace engine
 
         /// \brief Adds a layer to the stack.
         void push_layer(layer *layer);
+        void pop_layer(layer* layer);
         /// \brief Adds a overlay to the stack.
         void push_overlay(layer *overlay);
 
