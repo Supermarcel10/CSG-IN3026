@@ -99,7 +99,36 @@ main_game::main_game(game_state_manager& state_manager)
 //    glm::mat4 terrain_transform(1.0f);
 //    terrain_transform = glm::translate(terrain_transform, glm::vec3(0.f, -0.5f, 0.f));
 
-    // Load the torch model.
+
+    // CLOUD
+
+    std::vector<engine::ref<engine::texture_2d>> cloud_textures;
+    cloud_textures.push_back(engine::texture_2d::create("assets/models/misc/cloud/eroge-48-1x.png", false));
+
+    cloud_material = engine::material::create(
+            32.0f,
+            glm::vec3(1.0f),
+            glm::vec3(1.0f),
+            glm::vec3(0.1f),
+            1.0f
+    );
+
+    auto cloud_model = engine::model::create("assets/models/misc/cloud/Cloud1.fbx");
+    engine::game_object_properties cloud_props;
+    cloud_props.meshes = cloud_model->meshes();
+    cloud_props.textures = cloud_textures;
+//    cloud_props.rotation_axis = glm::vec3(-1.f, 0.f, 0.f);
+//    cloud_props.rotation_amount = glm::radians(90.0f);
+    float cloud_scale = 3.f / glm::max(cloud_model->size().x, glm::max(cloud_model->size().y, cloud_model->size().z));
+    cloud_props.position = { 2.f, 3.f, 1.f };
+    cloud_props.bounding_shape = cloud_model->size() / 2.f * cloud_scale;
+    cloud_props.scale = glm::vec3(cloud_scale);
+    cloud_props.is_static = true;
+    m_cloud = engine::game_object::create(cloud_props);
+
+
+    // TORCH
+    // TODO: Light and fire FX
     auto torch_model = engine::model::create("assets/models/buildings/misc/FireTorch.3ds");
     engine::game_object_properties torch_props;
     torch_props.meshes = torch_model->meshes();
@@ -110,7 +139,9 @@ main_game::main_game(game_state_manager& state_manager)
     torch_props.bounding_shape = torch_model->size() / 2.f * torch_scale;
     m_torch = engine::game_object::create(torch_props);
 
+
     // TREE
+
     std::vector<engine::ref<engine::texture_2d>> tree_textures;
     tree_textures.push_back(engine::texture_2d::create("assets/models/resources/tree/PineTexture.png", false));
 
@@ -248,6 +279,8 @@ void main_game::on_render()
     rock_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_rock);
 
+    cloud_material->submit(mesh_shader);
+    engine::renderer::submit(mesh_shader, m_cloud);
 
     m_mannequin_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_mannequin);

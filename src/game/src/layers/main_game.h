@@ -13,6 +13,9 @@ private:
     engine::ref<engine::skybox>			m_skybox{};
     engine::ref<engine::game_object>	m_terrain{};
 
+    engine::ref<engine::game_object>    m_cloud{};
+    engine::ref<engine::material>		cloud_material{};
+
     engine::ref<engine::game_object>	m_torch{};
 
     engine::ref<engine::game_object>	m_ball{};
