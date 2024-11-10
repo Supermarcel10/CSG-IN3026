@@ -87,7 +87,7 @@ main_game::main_game(game_state_manager& state_manager)
     m_mannequin = engine::game_object::create(mannequin_props);
 
     // Load the terrain texture and create a terrain mesh. Create a terrain object. Set its properties
-    std::vector<engine::ref<engine::texture_2d>> terrain_textures = { engine::texture_2d::create("assets/textures/terrain.bmp", false) };
+    auto terrain_textures = { engine::texture_2d::create("assets/textures/terrain.bmp", false) };
     engine::ref<engine::terrain> terrain_shape = engine::terrain::create(5.f, 0.5f, 5.f);
     engine::game_object_properties terrain_props;
     terrain_props.meshes = { terrain_shape->mesh() };
@@ -102,7 +102,7 @@ main_game::main_game(game_state_manager& state_manager)
 //    terrain_transform = glm::translate(terrain_transform, glm::vec3(0.f, -0.5f, 0.f));
 
     // Load the torch model.
-    engine::ref <engine::model> torch_model = engine::model::create("assets/models/buildings/misc/FireTorch.3ds");
+    auto torch_model = engine::model::create("assets/models/buildings/misc/FireTorch.3ds");
     engine::game_object_properties torch_props;
     torch_props.meshes = torch_model->meshes();
     torch_props.textures = torch_model->textures();
@@ -112,19 +112,8 @@ main_game::main_game(game_state_manager& state_manager)
     torch_props.bounding_shape = torch_model->size() / 2.f * torch_scale;
     m_torch = engine::game_object::create(torch_props);
 
-    // Load the cow model. Create a cow object. Set its properties
-//	engine::ref <engine::model> cow_model = engine::model::create("assets/models/static/cow4.3ds");
-//	engine::game_object_properties cow_props;
-//	cow_props.meshes = cow_model->meshes();
-//	cow_props.textures = cow_model->textures();
-//	float cow_scale = 1.f / glm::max(cow_model->size().x, glm::max(cow_model->size().y, cow_model->size().z));
-//	cow_props.position = { 0.f, 0.f, -.2f };
-//	cow_props.scale = glm::vec3(cow_scale);
-//	cow_props.bounding_shape = cow_model->size() / 2.f * cow_scale;
-//	m_cow = engine::game_object::create(cow_props);
-
     // Load the tree model. Create a tree object. Set its properties
-    engine::ref <engine::model> tree_model = engine::model::create("assets/models/static/elm.3ds");
+    auto tree_model = engine::model::create("assets/models/static/elm.3ds");
     engine::game_object_properties tree_props;
     tree_props.meshes = tree_model->meshes();
     tree_props.textures = tree_model->textures();
@@ -134,7 +123,7 @@ main_game::main_game(game_state_manager& state_manager)
     tree_props.scale = glm::vec3(tree_scale);
     m_tree = engine::game_object::create(tree_props);
 
-    engine::ref<engine::sphere> sphere_shape = engine::sphere::create(10, 20, 0.5f);
+    auto sphere_shape = engine::sphere::create(10, 20, 0.5f);
     engine::game_object_properties sphere_props;
     sphere_props.position = { 0.f, 5.f, -5.f };
     sphere_props.meshes = { sphere_shape->mesh() };
@@ -231,12 +220,6 @@ void main_game::on_render()
     tree_transform = glm::rotate(tree_transform, m_tree->rotation_amount(), m_tree->rotation_axis());
     tree_transform = glm::scale(tree_transform, m_tree->scale());
     engine::renderer::submit(mesh_shader, tree_transform, m_tree);
-
-    //glm::mat4 cow_transform(1.0f);
-    //cow_transform = glm::translate(cow_transform, m_cow->position());
-    //cow_transform = glm::rotate(cow_transform, m_cow->rotation_amount(), m_cow->rotation_axis());
-    //cow_transform = glm::scale(cow_transform, m_cow->scale());
-    //engine::renderer::submit(mesh_shader, cow_transform, m_cow);
 
     m_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_ball);
