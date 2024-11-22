@@ -24,7 +24,7 @@ namespace prefab
 //            float opacity = 1.0f
 //    )
 
-    auto hexagons_texture = hexagons_texture;
+    auto hexagons_texture = "assets/textures/hexagons_medieval_texture.png";
 
     namespace building
     {
@@ -211,7 +211,7 @@ namespace prefab
             );
         }
 
-        inline ref<prefab> wellBUILDING_COLOR color()
+        inline ref<prefab> well(BUILDING_COLOR color)
         {
             return engine::prefab_manager::instance().register_prefab(
                     "well",
