@@ -100,61 +100,8 @@ main_game::main_game(game_state_manager& state_manager)
 //    glm::mat4 terrain_transform(1.0f);
 //    terrain_transform = glm::translate(terrain_transform, glm::vec3(0.f, -0.5f, 0.f));
 
-
     // CLOUD
-
-    std::vector<engine::ref<engine::texture_2d>> cloud_textures;
-    cloud_textures.push_back(engine::texture_2d::create("assets/models/misc/cloud/eroge-48-1x.png", false));
-
-    cloud_material = engine::material::create(
-            32.0f,
-            glm::vec3(1.0f),
-            glm::vec3(1.0f),
-            glm::vec3(0.1f),
-            1.0f
-    );
-
-    auto cloud_model = engine::model::create("assets/models/misc/cloud/Cloud1.fbx");
-    engine::game_object_properties cloud_props;
-    cloud_props.meshes = cloud_model->meshes();
-    cloud_props.textures = cloud_textures;
-//    cloud_props.rotation_axis = glm::vec3(-1.f, 0.f, 0.f);
-//    cloud_props.rotation_amount = glm::radians(90.0f);
-    float cloud_scale = 3.f / glm::max(cloud_model->size().x, glm::max(cloud_model->size().y, cloud_model->size().z));
-    cloud_props.position = { 2.f, 3.f, 1.f };
-    cloud_props.bounding_shape = cloud_model->size() / 2.f * cloud_scale;
-    cloud_props.scale = glm::vec3(cloud_scale);
-    cloud_props.is_static = true;
-    m_cloud = engine::game_object::create(cloud_props);
-
-
-    // ISLAND
-
-//    std::vector<engine::ref<engine::texture_2d>> island_textures;
-//    // TODO: Add MTL support for this to actually work as intended.
-//    island_textures.push_back(engine::texture_2d::create("assets/models/misc/island/Island01.mtl", false));
-//
-//    island_material = engine::material::create(
-//            32.0f,
-//            glm::vec3(1.0f),
-//            glm::vec3(1.0f),
-//            glm::vec3(0.1f),
-//            1.0f
-//    );
-//
-//    auto island_model = engine::model::create("assets/models/misc/island/Island01.obj");
-//    engine::game_object_properties island_props;
-//    island_props.meshes = island_model->meshes();
-//    island_props.textures = island_model->textures();
-////    island_props.rotation_axis = glm::vec3(-1.f, 0.f, 0.f);
-////    island_props.rotation_amount = glm::radians(90.0f);
-//    float island_scale = 1.f / glm::max(island_model->size().x, glm::max(island_model->size().y, island_model->size().z));
-//    island_props.position = { 0.f, 0.5f, 0.f };
-//    island_props.bounding_shape = island_model->size() / 2.f * island_scale;
-//    island_props.scale = glm::vec3(island_scale);
-//    island_props.is_static = true;
-//    m_island = engine::game_object::create(island_props);
-
+    // TODO: See if the cloud  can be made into a primitive instead to hit the requirements for Milestone 2.
 
     // HOUSE
 
@@ -198,21 +145,6 @@ main_game::main_game(game_state_manager& state_manager)
     tree->create_instance(glm::vec3(4.f, 0.5f, -3.0f));
     tree->create_instance(glm::vec3(4.f, 0.5f, 0.0f));
 
-    // SPHERE
-
-    ball_material = engine::material::create(1.0f, glm::vec3(1.0f, 0.1f, 0.07f),
-                                             glm::vec3(1.0f, 0.1f, 0.07f), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f);
-
-    auto sphere_shape = engine::sphere::create(10, 20, 0.5f);
-    engine::game_object_properties sphere_props;
-    sphere_props.position = { 0.f, 5.f, -5.f };
-    sphere_props.meshes = { sphere_shape->mesh() };
-    sphere_props.type = 1;
-    sphere_props.bounding_shape = glm::vec3(0.5f);
-    sphere_props.restitution = 0.92f;
-    sphere_props.mass = 0.000001f;
-    m_ball = engine::game_object::create(sphere_props);
-
 
     // ROCK
 
@@ -248,13 +180,9 @@ main_game::main_game(game_state_manager& state_manager)
 
     // BINDING OBJECTS
     objects.push_back(m_terrain);
-    objects.push_back(m_ball);
     objects.push_back(m_rock);
-//    objects.push_back(m_island);
 
     collidable_objects.push_back(m_terrain);
-//    collidable_objects.push_back(m_island);
-    collidable_objects.push_back(m_ball);
     m_physics_manager = engine::bullet_manager::create(collidable_objects);
 
     m_text_manager = engine::text_manager::create();
@@ -298,9 +226,6 @@ void main_game::on_render()
 
     engine::prefab_renderer::render_all(mesh_shader);
 
-    ball_material->submit(mesh_shader);
-    engine::renderer::submit(mesh_shader, m_ball);
-
     rock_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_rock);
 
@@ -309,9 +234,6 @@ void main_game::on_render()
 
     house_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_house);
-
-    cloud_material->submit(mesh_shader);
-    engine::renderer::submit(mesh_shader, m_cloud);
 
     m_mannequin_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_mannequin);
