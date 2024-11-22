@@ -61,6 +61,9 @@
     <Filter Include="src\platform\windows">
       <UniqueIdentifier>{9B5931A8-87E8-BA71-3007-CF6C1C75CB17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\engine\prefabs">
+      <UniqueIdentifier>{15ef8fae-2e9d-43df-8796-1c97640153cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="external\FMOD\include\fmod.h">
@@ -1367,6 +1370,9 @@
     </ClInclude>
     <ClInclude Include="src\engine\entities\shapes\rock.h">
       <Filter>src\engine\entities\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\prefabs\prefab.h">
+      <Filter>src\engine\prefabs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

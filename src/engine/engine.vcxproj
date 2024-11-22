@@ -557,6 +557,7 @@ IF EXIST ..\engine\external\FMOD\lib\x64\fmod.dll\ (xcopy /Q /E /Y /I ..\engine\
     <ClInclude Include="src\engine\events\mouse_event.h" />
     <ClInclude Include="src\engine\key_codes.h" />
     <ClInclude Include="src\engine\mouse_buttons_codes.h" />
+    <ClInclude Include="src\engine\prefabs\prefab.h" />
     <ClInclude Include="src\engine\renderer\buffer.h" />
     <ClInclude Include="src\engine\renderer\camera.h" />
     <ClInclude Include="src\engine\renderer\graphics_context.h" />

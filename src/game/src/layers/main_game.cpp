@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "engine/utils/track.h"
+#include <engine/prefabs/prefab.h>
 
 
 main_game::main_game(game_state_manager& state_manager)
@@ -183,30 +184,19 @@ main_game::main_game(game_state_manager& state_manager)
 
     // TREE
 
-    std::vector<engine::ref<engine::texture_2d>> tree_textures;
-    tree_textures.push_back(engine::texture_2d::create("assets/models/resources/tree/PineTexture.png", false));
-
-    tree_material = engine::material::create(
-            32.0f,
-            glm::vec3(1.0f),
-            glm::vec3(1.0f),
-            glm::vec3(0.1f),
-            1.0f
+    auto tree = engine::prefab_manager::instance().register_prefab(
+            "pine_tree",
+            "assets/models/resources/tree/PineTree1.fbx",
+            "assets/models/resources/tree/PineTexture.png",
+            glm::vec3(0.f, 0.5f, 0.f),
+            glm::vec3(-1.f, 0.f, 0.f),
+            glm::radians(90.0f),
+            3.f
     );
 
-    auto tree_model = engine::model::create("assets/models/resources/tree/PineTree1.fbx");
-    engine::game_object_properties tree_props;
-    tree_props.meshes = tree_model->meshes();
-    tree_props.textures = tree_textures;
-    tree_props.rotation_axis = glm::vec3(-1.f, 0.f, 0.f);
-    tree_props.rotation_amount = glm::radians(90.0f);
-    float tree_scale = 3.f / glm::max(tree_model->size().x, glm::max(tree_model->size().y, tree_model->size().z));
-    tree_props.position = { 0.f, 0.5f, 0.f };
-    tree_props.bounding_shape = tree_model->size() / 2.f * tree_scale;
-    tree_props.scale = glm::vec3(tree_scale);
-    tree_props.is_static = true;
-    m_tree = engine::game_object::create(tree_props);
-
+    tree->create_instance(glm::vec3(4.f, 0.5f, -5.0f));
+    tree->create_instance(glm::vec3(4.f, 0.5f, -3.0f));
+    tree->create_instance(glm::vec3(4.f, 0.5f, 0.0f));
 
     // SPHERE
 
@@ -261,7 +251,6 @@ main_game::main_game(game_state_manager& state_manager)
     objects.push_back(m_ball);
     objects.push_back(m_rock);
 //    objects.push_back(m_island);
-    objects.push_back(m_tree);
 
     collidable_objects.push_back(m_terrain);
 //    collidable_objects.push_back(m_island);
@@ -307,13 +296,7 @@ void main_game::on_render()
 
     engine::renderer::submit(mesh_shader, m_terrain);
 
-    glm::mat4 tree_transform(1.0f);
-    tree_transform = glm::translate(tree_transform, glm::vec3(4.f, 0.5, -5.0f));
-    tree_transform = glm::rotate(tree_transform, m_tree->rotation_amount(), m_tree->rotation_axis());
-    tree_transform = glm::scale(tree_transform, m_tree->scale());
-
-    tree_material->submit(mesh_shader);
-    engine::renderer::submit(mesh_shader, tree_transform, m_tree);
+    engine::prefab_renderer::render_all(mesh_shader);
 
     ball_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_ball);
