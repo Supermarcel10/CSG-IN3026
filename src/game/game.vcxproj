@@ -138,6 +138,7 @@
     <ClInclude Include="src\layers\main_menu.h" />
     <ClInclude Include="src\layers\pause_menu.h" />
     <ClInclude Include="src\managers\game_state_manager.h" />
+    <ClInclude Include="src\prefabs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game.cpp" />

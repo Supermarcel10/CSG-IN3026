@@ -1,6 +1,6 @@
 #include "main_game.h"
 #include "platform/opengl/gl_shader.h"
-
+#include "../prefabs.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "engine/utils/track.h"
@@ -22,7 +22,7 @@ main_game::main_game(game_state_manager& state_manager)
 //    m_audio_manager->load_sound("", engine::sound_type::spatialised, "bounce");
     m_audio_manager->load_sound("assets/audio/music/peace/2-uplifting.wav", engine::sound_type::track, "music");
     m_audio_manager->play("music");
-    m_audio_manager->volume("music", .5f);
+    m_audio_manager->volume("music", .0f);
 // TODO: Expand the audio manager to support layering and transition.
 
     // Initialise the shaders, materials and lights
@@ -131,16 +131,7 @@ main_game::main_game(game_state_manager& state_manager)
 
     // TREE
 
-    auto tree = engine::prefab_manager::instance().register_prefab(
-            "pine_tree",
-            "assets/models/resources/tree/PineTree1.fbx",
-            "assets/models/resources/tree/PineTexture.png",
-            glm::vec3(0.f, 0.5f, 0.f),
-            glm::vec3(-1.f, 0.f, 0.f),
-            glm::radians(90.0f),
-            3.f
-    );
-
+    auto tree = prefab::decoration::pine_tree();
     tree->create_instance(glm::vec3(4.f, 0.5f, -5.0f));
     tree->create_instance(glm::vec3(4.f, 0.5f, -3.0f));
     tree->create_instance(glm::vec3(4.f, 0.5f, 0.0f));
