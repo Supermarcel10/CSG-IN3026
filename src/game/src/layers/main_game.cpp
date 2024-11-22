@@ -103,39 +103,21 @@ main_game::main_game(game_state_manager& state_manager)
     // CLOUD
     // TODO: See if the cloud  can be made into a primitive instead to hit the requirements for Milestone 2.
 
-    // HOUSE
+    // TODO: Fix issue where only one type of prefab can be loaded at once!
+    using prefab::building::BUILDING_COLOR;
 
-    std::vector<engine::ref<engine::texture_2d>> house_textures;
-    house_textures.push_back(engine::texture_2d::create("assets/models/buildings/blue.png", false));
-
-    house_material = engine::material::create(
-            32.0f,
-            glm::vec3(1.0f),
-            glm::vec3(1.0f),
-            glm::vec3(0.1f),
-            1.0f
-    );
-
-    auto house_model = engine::model::create("assets/models/buildings/home_A.fbx");
-    engine::game_object_properties house_props;
-    house_props.meshes = house_model->meshes();
-    house_props.textures = house_textures;
-    house_props.rotation_axis = glm::vec3(-1.f, 0.f, 0.f);
-    house_props.rotation_amount = glm::radians(90.0f);
-    float house_scale = 3.f / glm::max(house_model->size().x, glm::max(house_model->size().y, house_model->size().z));
-    house_props.position = { 0.f, 0.5f, 0.f };
-    house_props.bounding_shape = house_model->size() / 2.f * house_scale;
-    house_props.scale = glm::vec3(house_scale);
-    house_props.is_static = true;
-    m_house = engine::game_object::create(house_props);
-
-    // TREE
+//    auto home = prefab::building::home_b(BUILDING_COLOR::BLUE);
+//    home->create_instance(glm::vec3(4.f, 0.5f, -5.0f));
 
     auto tree = prefab::decoration::pine_tree();
     tree->create_instance(glm::vec3(4.f, 0.5f, -5.0f));
     tree->create_instance(glm::vec3(4.f, 0.5f, -3.0f));
     tree->create_instance(glm::vec3(4.f, 0.5f, 0.0f));
 
+    // Base
+    // TODO: Test why base does not show
+    /*auto base = prefab::tile::base::base();
+    base->create_instance(glm::vec3(4.f, 0.5f, -5.0f));*/
 
     // ROCK
 
@@ -171,9 +153,9 @@ main_game::main_game(game_state_manager& state_manager)
 
     // BINDING OBJECTS
     objects.push_back(m_terrain);
+    collidable_objects.push_back(m_terrain);
     objects.push_back(m_rock);
 
-    collidable_objects.push_back(m_terrain);
     m_physics_manager = engine::bullet_manager::create(collidable_objects);
 
     m_text_manager = engine::text_manager::create();
@@ -219,12 +201,6 @@ void main_game::on_render()
 
     rock_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_rock);
-
-//    island_material->submit(mesh_shader);
-//    engine::renderer::submit(mesh_shader, m_island);
-
-    house_material->submit(mesh_shader);
-    engine::renderer::submit(mesh_shader, m_house);
 
     m_mannequin_material->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, m_mannequin);

@@ -14,12 +14,6 @@ private:
     engine::ref<engine::skybox>			m_skybox{};
     engine::ref<engine::game_object>	m_terrain{};
 
-//    engine::ref<engine::game_object>	m_island{};
-//    engine::ref<engine::material>       island_material{};
-
-    engine::ref<engine::game_object>	m_house{};
-    engine::ref<engine::material>		house_material{};
-
     engine::ref<engine::game_object>	m_mannequin{};
     engine::ref<engine::material>		m_mannequin_material{};
 
