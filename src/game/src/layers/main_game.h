@@ -5,31 +5,35 @@
 #include "../managers/prefabs.h"
 
 
+using std::vector;
+using glm::vec3;
+using engine::skybox;
+using engine::game_object;
+using engine::material;
+
 class main_game : public controlled_layer
 {
 private:
     prefabs prefabs;
 
-    std::vector<engine::ref<engine::game_object>> objects{};
-    std::vector<engine::ref<engine::game_object>> collidable_objects{}; // TODO: Look into generalising this in a more efficient manner
+    vector<ref<game_object>> objects{};
 
-    // TODO: Look into writing a more generic way of creating some of these objects multiple times in an easier manner. Something along prefabs like in other engines?
-    engine::ref<engine::skybox>			m_skybox{};
-    engine::ref<engine::game_object>	m_terrain{};
+    ref<skybox>			m_skybox{};
+    ref<game_object>	m_terrain{};
 
-    engine::ref<engine::game_object>	m_mannequin{};
-    engine::ref<engine::material>		m_mannequin_material{};
+    ref<game_object>	m_mannequin{};
+    ref<material>		m_mannequin_material{};
 
-    engine::ref<engine::game_object>    m_rock{};
-    engine::ref<engine::material>       rock_material{};
+    ref<game_object>    m_rock{};
+    ref<material>       rock_material{};
 
 
     engine::DirectionalLight            m_directionalLight;
 
-    engine::ref<engine::bullet_manager> m_physics_manager{};
-    engine::ref<engine::audio_manager>  m_audio_manager{};
+    ref<engine::bullet_manager> m_physics_manager{};
+    ref<engine::audio_manager>  m_audio_manager{};
     float								m_prev_sphere_y_vel = 0.f;
-    engine::ref<engine::text_manager>	m_text_manager{};
+    ref<engine::text_manager>	m_text_manager{};
 
     engine::orthographic_camera       m_2d_camera;
     engine::perspective_camera        m_3d_camera;
@@ -43,6 +47,5 @@ public:
     void on_event(engine::event& event) override;
 
 private:
-    void check_bounce();
     void handle_key_event(engine::key_pressed_event& e);
 };

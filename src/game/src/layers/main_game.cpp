@@ -33,14 +33,14 @@ main_game::main_game(game_state_manager& state_manager)
     std::dynamic_pointer_cast<engine::gl_shader>(mesh_shader)->set_uniform("gColorMap", 0);
 
     // #c4c4bc (196, 196, 188)
-    m_directionalLight.Color = glm::vec3(
+    m_directionalLight.Color = vec3(
             (float) 196 / 255,
             (float) 196 / 255,
             (float) 188 / 255);
 
     m_directionalLight.AmbientIntensity = 0.55f;
     m_directionalLight.DiffuseIntensity = 0.75f;
-    m_directionalLight.Direction = glm::normalize(glm::vec3(1.f, -.2f, .2f));
+    m_directionalLight.Direction = glm::normalize(vec3(1.f, -.2f, .2f));
 
     m_directionalLight.submit(mesh_shader);
 
@@ -55,30 +55,36 @@ main_game::main_game(game_state_manager& state_manager)
                                                                            glm::ortho(0.f, (float)engine::application::window().width(), 0.f,
                                                                                       (float)engine::application::window().height()));
 
-    m_mannequin_material = engine::material::create(1.0f, glm::vec3(0.5f, 0.5f, 0.5f),
-                                                    glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), 1.0f);
+    m_mannequin_material = engine::material::create(
+        1.0f,
+        vec3(0.5f, 0.5f, 0.5f),
+        vec3(0.5f, 0.5f, 0.5f),
+        vec3(0.5f, 0.5f, 0.5f),
+        1.0f
+    );
 
-    m_skybox = engine::skybox::create(50.f,
-                                      { engine::texture_2d::create("assets/textures/skybox/front.jpg", true),
-                                        engine::texture_2d::create("assets/textures/skybox/right.jpg", true),
-                                        engine::texture_2d::create("assets/textures/skybox/back.jpg", true),
-                                        engine::texture_2d::create("assets/textures/skybox/left.jpg", true),
-                                        engine::texture_2d::create("assets/textures/skybox/top.jpg", true),
-                                        engine::texture_2d::create("assets/textures/skybox/bot.jpg", true)
-                                      });
+    m_skybox = skybox::create(50.f,
+        {
+            engine::texture_2d::create("assets/textures/skybox/front.jpg", true),
+            engine::texture_2d::create("assets/textures/skybox/right.jpg", true),
+            engine::texture_2d::create("assets/textures/skybox/back.jpg", true),
+            engine::texture_2d::create("assets/textures/skybox/left.jpg", true),
+            engine::texture_2d::create("assets/textures/skybox/top.jpg", true),
+            engine::texture_2d::create("assets/textures/skybox/bot.jpg", true)
+        });
 
     // Orc warrior from https://sketchfab.com/3d-models/orc-warrior-4f8e272891a449c8935285eab8a3a2f9
-    std::vector<engine::ref<engine::texture_2d>> mannequin_textures;
+    vector<ref<engine::texture_2d>> mannequin_textures;
     mannequin_textures.push_back(engine::texture_2d::create("assets/textures/warrior_DefaultMaterial_BaseColor.png", false));
     mannequin_textures.push_back(engine::texture_2d::create("assets/textures/weapon_DefaultMaterial_BaseColor.png", false));
-    engine::ref<engine::skinned_mesh> m_skinned_mesh = engine::skinned_mesh::create("assets/models/animated/warrior/warrior_animation.fbx");
+    ref<engine::skinned_mesh> m_skinned_mesh = engine::skinned_mesh::create("assets/models/animated/warrior/warrior_animation.fbx");
     m_skinned_mesh->switch_root_movement(false);
     m_skinned_mesh->set_textures(mannequin_textures);
 
     engine::game_object_properties mannequin_props;
     mannequin_props.animated_mesh = m_skinned_mesh;
-    mannequin_props.scale = glm::vec3(0.7f);
-    mannequin_props.position = glm::vec3(2.0f, 0.5f, -5.0f);
+    mannequin_props.scale = vec3(0.7f);
+    mannequin_props.position = vec3(2.0f, 0.5f, -5.0f);
     mannequin_props.textures = mannequin_textures;
     mannequin_props.type = 0;
     mannequin_props.bounding_shape = m_skinned_mesh->size() / 2.f * mannequin_props.scale.x;
@@ -86,35 +92,35 @@ main_game::main_game(game_state_manager& state_manager)
 
     // Load the terrain texture and create a terrain mesh. Create a terrain object. Set its properties
     auto terrain_textures = { engine::texture_2d::create("assets/textures/terrain.bmp", false) };
-    engine::ref<engine::terrain> terrain_shape = engine::terrain::create(5.f, 0.5f, 5.f);
+    ref<engine::terrain> terrain_shape = engine::terrain::create(5.f, 0.5f, 5.f);
     engine::game_object_properties terrain_props;
     terrain_props.meshes = { terrain_shape->mesh() };
     terrain_props.textures = terrain_textures;
     terrain_props.is_static = true;
     terrain_props.type = 0;
-    terrain_props.bounding_shape = glm::vec3(5.f, 0.5f, 5.f);
+    terrain_props.bounding_shape = vec3(5.f, 0.5f, 5.f);
     terrain_props.restitution = 0.92f;
     m_terrain = engine::game_object::create(terrain_props);
 
 //    glm::mat4 terrain_transform(1.0f);
-//    terrain_transform = glm::translate(terrain_transform, glm::vec3(0.f, -0.5f, 0.f));
+//    terrain_transform = glm::translate(terrain_transform, vec3(0.f, -0.5f, 0.f));
 
     // CLOUD
     // TODO: See if the cloud can be made into a primitive instead to hit the requirements for Milestone 2.
 
     // TODO: Fix issue where only one type of prefab can be loaded at once!
     //auto home =  prefabs::get(prefabs::BUILDING::HOME_A);
-    //home->create_instance(glm::vec3(4.f, 0.5f, -5.0f));
+    //home->create_instance(vec3(4.f, 0.5f, -5.0f));
 
     auto tree = prefabs::get(prefabs::DECORATION::PINE_TREE);
-    tree->create_instance(glm::vec3(4.f, 0.5f, -5.0f));
-    tree->create_instance(glm::vec3(4.f, 0.5f, -3.0f));
-    tree->create_instance(glm::vec3(4.f, 0.5f, 0.0f));
+    tree->create_instance(vec3(4.f, 0.5f, -5.0f));
+    tree->create_instance(vec3(4.f, 0.5f, -3.0f));
+    tree->create_instance(vec3(4.f, 0.5f, 0.0f));
 
     // Base
     // TODO: Test why base does not show
 //    auto base = prefabs::get(prefabs::TILE::GRASS);
-//    base->create_instance(glm::vec3(0.f, 0.5f, 0.f));
+//    base->create_instance(vec3(0.f, 0.5f, 0.f));
 
     // ROCK
 
@@ -124,15 +130,15 @@ main_game::main_game(game_state_manager& state_manager)
     //#c1c1c1 rgb(193, 193, 193)
     rock_material = engine::material::create(
             0.0f,
-            glm::vec3(
+            vec3(
                     (float) 73 / 255,
                     (float) 73 / 255,
                     (float) 73 / 255), // Unlit color
-            glm::vec3(
+            vec3(
                     (float) 137 / 255,
                     (float) 137 / 255,
                     (float) 137 / 255), // Direct color
-            glm::vec3(
+            vec3(
                     (float) 193 / 255,
                     (float) 193 / 255,
                     (float) 193 / 255), // Shine
@@ -143,18 +149,16 @@ main_game::main_game(game_state_manager& state_manager)
     engine::game_object_properties rock_props;
     rock_props.position = { 2.5f, 0.f, 2.5f };
     rock_props.meshes = { rock_shape->mesh() };
-    rock_props.bounding_shape = glm::vec3(0.5f);
+    rock_props.bounding_shape = vec3(0.5f);
     rock_props.is_static = true;
     m_rock = engine::game_object::create(rock_props);
 
 
     // BINDING OBJECTS
     objects.push_back(m_terrain);
-    collidable_objects.push_back(m_terrain);
     objects.push_back(m_rock);
 
-    m_physics_manager = engine::bullet_manager::create(collidable_objects);
-
+    m_physics_manager = engine::bullet_manager::create(objects);
     m_text_manager = engine::text_manager::create();
 
     m_skinned_mesh->switch_animation(6);
@@ -214,9 +218,11 @@ void main_game::on_event(engine::event& e)
 }
 
 void main_game::handle_key_event(engine::key_pressed_event& e) {
+    using engine::key_codes;
+
     auto key_code = e.key_code();
 
-    if (key_code == engine::key_codes::KEY_ESCAPE || key_code == engine::key_codes::KEY_SPACE)
+    if (key_code == key_codes::KEY_ESCAPE || key_code == key_codes::KEY_SPACE)
     {
         // TODO: Investigate issue where pause menu is not triggered first time.
         // Debounce issue?
