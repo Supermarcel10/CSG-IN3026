@@ -2,11 +2,14 @@
 #include <engine.h>
 #include "engine/events/key_event.h"
 #include "../controlled_layer.h"
+#include "../managers/prefabs.h"
 
 
 class main_game : public controlled_layer
 {
 private:
+    prefabs prefabs;
+
     std::vector<engine::ref<engine::game_object>> objects{};
     std::vector<engine::ref<engine::game_object>> collidable_objects{}; // TODO: Look into generalising this in a more efficient manner
 

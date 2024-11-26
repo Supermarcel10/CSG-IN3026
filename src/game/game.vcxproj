@@ -138,7 +138,7 @@
     <ClInclude Include="src\layers\main_menu.h" />
     <ClInclude Include="src\layers\pause_menu.h" />
     <ClInclude Include="src\managers\game_state_manager.h" />
-    <ClInclude Include="src\prefabs.h" />
+    <ClInclude Include="src\managers\prefabs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game.cpp" />
@@ -146,6 +146,7 @@
     <ClCompile Include="src\layers\main_menu.cpp" />
     <ClCompile Include="src\layers\pause_menu.cpp" />
     <ClCompile Include="src\managers\game_state_manager.cpp" />
+    <ClCompile Include="src\managers\prefabs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\engine\engine.vcxproj">

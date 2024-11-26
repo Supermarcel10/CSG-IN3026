@@ -1,6 +1,5 @@
 #include "main_game.h"
 #include "platform/opengl/gl_shader.h"
-#include "../prefabs.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "engine/utils/track.h"
@@ -101,23 +100,21 @@ main_game::main_game(game_state_manager& state_manager)
 //    terrain_transform = glm::translate(terrain_transform, glm::vec3(0.f, -0.5f, 0.f));
 
     // CLOUD
-    // TODO: See if the cloud  can be made into a primitive instead to hit the requirements for Milestone 2.
+    // TODO: See if the cloud can be made into a primitive instead to hit the requirements for Milestone 2.
 
     // TODO: Fix issue where only one type of prefab can be loaded at once!
-    using prefab::building::BUILDING_COLOR;
+    //auto home =  prefabs::get(prefabs::BUILDING::HOME_A);
+    //home->create_instance(glm::vec3(4.f, 0.5f, -5.0f));
 
-//    auto home = prefab::building::home_b(BUILDING_COLOR::BLUE);
-//    home->create_instance(glm::vec3(4.f, 0.5f, -5.0f));
-
-    auto tree = prefab::decoration::pine_tree();
+    auto tree = prefabs::get(prefabs::DECORATION::PINE_TREE);
     tree->create_instance(glm::vec3(4.f, 0.5f, -5.0f));
     tree->create_instance(glm::vec3(4.f, 0.5f, -3.0f));
     tree->create_instance(glm::vec3(4.f, 0.5f, 0.0f));
 
     // Base
     // TODO: Test why base does not show
-    /*auto base = prefab::tile::base::base();
-    base->create_instance(glm::vec3(4.f, 0.5f, -5.0f));*/
+//    auto base = prefabs::get(prefabs::TILE::GRASS);
+//    base->create_instance(glm::vec3(0.f, 0.5f, 0.f));
 
     // ROCK
 
