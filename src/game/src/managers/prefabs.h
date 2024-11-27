@@ -13,6 +13,8 @@ private:
     static const std::string building_base_path;
     static const float building_scale;
 
+    static const float tile_scale;
+
 public:
     // TODO: Fix colors, since prior optimisations removed all building colors but blue
     enum class BUILDING_COLOR

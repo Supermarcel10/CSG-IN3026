@@ -7,7 +7,9 @@ using glm::radians;
 const std::string prefabs::hexagons_texture = "assets/textures/hexagons_medieval_texture.png";
 
 const std::string prefabs::building_base_path = "assets/models/buildings/";
-const float prefabs::building_scale = 1.f;
+const float prefabs::building_scale = .6f;
+
+const float prefabs::tile_scale = 1.2f;
 
 ref<prefab> prefabs::get(BUILDING building, BUILDING_COLOR color)
 {
@@ -34,10 +36,10 @@ ref<prefab> prefabs::get(TILE tile)
         "base", // TODO: Make this unique
         "assets/models/tiles/base/hex_grass.fbx",
         hexagons_texture,
-        vec3(2.f, 0.f, 0.f),
         vec3(0.f),
-        radians(0.0f),
-        5.f
+        vec3(-1.f, 0.f, 0.f),
+        radians(90.f),
+        tile_scale
     );
 }
 
