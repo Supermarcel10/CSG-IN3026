@@ -134,19 +134,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\controlled_layer.h" />
+    <ClInclude Include="src\hex_grid.h" />
     <ClInclude Include="src\layers\main_game.h" />
     <ClInclude Include="src\layers\main_menu.h" />
     <ClInclude Include="src\layers\pause_menu.h" />
     <ClInclude Include="src\managers\game_state_manager.h" />
     <ClInclude Include="src\managers\prefabs.h" />
+    <ClInclude Include="src\world_generator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\hex_grid.cpp" />
     <ClCompile Include="src\layers\main_game.cpp" />
     <ClCompile Include="src\layers\main_menu.cpp" />
     <ClCompile Include="src\layers\pause_menu.cpp" />
     <ClCompile Include="src\managers\game_state_manager.cpp" />
     <ClCompile Include="src\managers\prefabs.cpp" />
+    <ClCompile Include="src\world_generator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\engine\engine.vcxproj">

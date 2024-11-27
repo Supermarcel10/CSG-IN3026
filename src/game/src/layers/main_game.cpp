@@ -1,5 +1,7 @@
 #include "main_game.h"
 #include "platform/opengl/gl_shader.h"
+#include "../hex_grid.h"
+#include "../world_generator.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "engine/utils/track.h"
@@ -105,22 +107,23 @@ main_game::main_game(game_state_manager& state_manager)
 //    glm::mat4 terrain_transform(1.0f);
 //    terrain_transform = glm::translate(terrain_transform, vec3(0.f, -0.5f, 0.f));
 
-    // CLOUD
-    // TODO: See if the cloud can be made into a primitive instead to hit the requirements for Milestone 2.
+        // CLOUD
+        // TODO: See if the cloud can be made into a primitive instead to hit the requirements for Milestone 2.
 
-    // TODO: Fix issue where only one type of prefab can be loaded at once!
-    //auto home =  prefabs::get(prefabs::BUILDING::HOME_A);
-    //home->create_instance(vec3(4.f, 0.5f, -5.0f));
+    // TERRAIN
+    hex_grid grid(1.0f);
+    // TODO: Sort out seed stuff!
+    world_generator generator(grid, "SEED TBD", 10);
+    generator.generate();
 
-    auto tree = prefabs::get(prefabs::DECORATION::PINE_TREE);
-    tree->create_instance(vec3(4.f, 0.5f, -5.0f));
-    tree->create_instance(vec3(4.f, 0.5f, -3.0f));
-    tree->create_instance(vec3(4.f, 0.5f, 0.0f));
+    auto home = prefabs::get(prefabs::BUILDING::HOME_A);
+    home->create_instance(vec3(4.f, 0.0f, -4.0f));
 
-    // Base
-    // TODO: Test why base does not show
-//    auto base = prefabs::get(prefabs::TILE::GRASS);
-//    base->create_instance(vec3(0.f, 0.5f, 0.f));
+    auto archery = prefabs::get(prefabs::BUILDING::ARCHERY_RANGE);
+    archery->create_instance(vec3(2.f, 0.0f, -4.0f));
+
+    auto barracks = prefabs::get(prefabs::BUILDING::BARRACKS);
+    auto barrack_instance = barracks->create_instance(vec3(6.f, 0.0f, -4.0f));
 
     // ROCK
 
