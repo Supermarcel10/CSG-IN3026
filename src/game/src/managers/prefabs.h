@@ -84,7 +84,7 @@ private:
         switch (color)
         {
         case BUILDING::ARCHERY_RANGE: return "archery_range";
-        case BUILDING::BARRACKS: return "archery_range";
+        case BUILDING::BARRACKS: return "barracks";
         case BUILDING::BLACKSMITH: return "blacksmith";
         case BUILDING::CASTLE: return "castle";
         case BUILDING::CHURCH: return "church";
