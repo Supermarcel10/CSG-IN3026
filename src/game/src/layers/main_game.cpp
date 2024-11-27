@@ -36,9 +36,9 @@ main_game::main_game(game_state_manager& state_manager)
 
     // #c4c4bc (196, 196, 188)
     m_directionalLight.Color = vec3(
-            (float) 196 / 255,
-            (float) 196 / 255,
-            (float) 188 / 255);
+        (float)196 / 255,
+        (float)196 / 255,
+        (float)188 / 255);
 
     m_directionalLight.AmbientIntensity = 0.55f;
     m_directionalLight.DiffuseIntensity = 0.75f;
@@ -90,22 +90,7 @@ main_game::main_game(game_state_manager& state_manager)
     mannequin_props.textures = mannequin_textures;
     mannequin_props.type = 0;
     mannequin_props.bounding_shape = m_skinned_mesh->size() / 2.f * mannequin_props.scale.x;
-    m_mannequin = engine::game_object::create(mannequin_props);
-
-    // Load the terrain texture and create a terrain mesh. Create a terrain object. Set its properties
-    auto terrain_textures = { engine::texture_2d::create("assets/textures/terrain.bmp", false) };
-    ref<engine::terrain> terrain_shape = engine::terrain::create(5.f, 0.5f, 5.f);
-    engine::game_object_properties terrain_props;
-    terrain_props.meshes = { terrain_shape->mesh() };
-    terrain_props.textures = terrain_textures;
-    terrain_props.is_static = true;
-    terrain_props.type = 0;
-    terrain_props.bounding_shape = vec3(5.f, 0.5f, 5.f);
-    terrain_props.restitution = 0.92f;
-    m_terrain = engine::game_object::create(terrain_props);
-
-//    glm::mat4 terrain_transform(1.0f);
-//    terrain_transform = glm::translate(terrain_transform, vec3(0.f, -0.5f, 0.f));
+    m_mannequin = game_object::create(mannequin_props);
 
         // CLOUD
         // TODO: See if the cloud can be made into a primitive instead to hit the requirements for Milestone 2.
@@ -115,6 +100,8 @@ main_game::main_game(game_state_manager& state_manager)
     // TODO: Sort out seed stuff!
     world_generator generator(grid, "SEED TBD", 10);
     generator.generate();
+
+    // EXAMPLE BUILDINGS
 
     auto home = prefabs::get(prefabs::BUILDING::HOME_A);
     home->create_instance(vec3(4.f, 0.0f, -4.0f));
@@ -154,14 +141,10 @@ main_game::main_game(game_state_manager& state_manager)
     rock_props.meshes = { rock_shape->mesh() };
     rock_props.bounding_shape = vec3(0.5f);
     rock_props.is_static = true;
-    m_rock = engine::game_object::create(rock_props);
-
+    m_rock = game_object::create(rock_props);
 
     // BINDING OBJECTS
-    objects.push_back(m_terrain);
-    objects.push_back(m_rock);
 
-    m_physics_manager = engine::bullet_manager::create(objects);
     m_text_manager = engine::text_manager::create();
 
     m_skinned_mesh->switch_animation(6);
@@ -171,7 +154,7 @@ void main_game::on_update(const engine::timestep& time_step)
 {
     m_3d_camera.on_update(time_step);
 
-    m_physics_manager->dynamics_world_update(objects, double(time_step));
+    // m_physics_manager->dynamics_world_update(objects, double(time_step));
 
     m_mannequin->animated_mesh()->on_update(time_step);
 
@@ -198,8 +181,6 @@ void main_game::on_render()
         texture->bind();
     }
     engine::renderer::submit(mesh_shader, m_skybox, skybox_tranform);
-
-    engine::renderer::submit(mesh_shader, m_terrain);
 
     engine::prefab_renderer::render_all(mesh_shader);
 

@@ -16,10 +16,7 @@ class main_game : public controlled_layer
 private:
     prefabs prefabs;
 
-    vector<ref<game_object>> objects{};
-
     ref<skybox>			m_skybox{};
-    ref<game_object>	m_terrain{};
 
     ref<game_object>	m_mannequin{};
     ref<material>		m_mannequin_material{};
@@ -32,7 +29,6 @@ private:
 
     ref<engine::bullet_manager> m_physics_manager{};
     ref<engine::audio_manager>  m_audio_manager{};
-    float								m_prev_sphere_y_vel = 0.f;
     ref<engine::text_manager>	m_text_manager{};
 
     engine::orthographic_camera       m_2d_camera;
