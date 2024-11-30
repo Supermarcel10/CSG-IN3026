@@ -11,9 +11,6 @@ using glm::vec3;
 using engine::ref;
 using engine::prefab_instance;
 
-// Forward declaration
-namespace engine { class prefab_instance; }
-
 struct hex_coord
 {
     int q;
