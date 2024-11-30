@@ -5,7 +5,7 @@
 using engine::ref;
 using engine::prefab;
 
-enum class BUILDING_COLOR
+enum class BUILDING_COLOR : uint_fast8_t
 {
     BLUE,
     GREEN,
@@ -13,7 +13,7 @@ enum class BUILDING_COLOR
     YELLOW
 };
 
-enum class BUILDING
+enum class BUILDING : uint_fast8_t
 {
     ARCHERY_RANGE,
     BARRACKS,
@@ -35,7 +35,7 @@ enum class BUILDING
     WINDMILL // TODO: Test windmill further, since the texture seems malformed.
 };
 
-enum class TILE
+enum class TILE : uint_fast8_t
 {
     GRASS,
     WATER,
@@ -44,7 +44,7 @@ enum class TILE
     ROAD
 };
 
-enum class DECORATION
+enum class DECORATION : uint_fast8_t
 {
     PINE_TREE
 };
