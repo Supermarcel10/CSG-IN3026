@@ -47,8 +47,8 @@ void pause_menu::on_render()
 
 	// RENDER TEXT
 	// Setup
-	const float window_x = engine::application::window().width();
-	const float window_y = engine::application::window().height();
+	const auto window_x = engine::application::window().width();
+	const auto window_y = engine::application::window().height();
 
 	// 100 x 100 grid for placement simplicity
 	const float x = window_x / 100.f;
