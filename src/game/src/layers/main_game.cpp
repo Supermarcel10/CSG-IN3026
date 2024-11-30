@@ -98,6 +98,7 @@ main_game::main_game(game_state_manager& state_manager)
     // TERRAIN
     hex_grid grid(1.0f);
     // TODO: Sort out seed stuff!
+    // TODO: Create optimisations to not display the sides of tiles if they're unseen.
     world_generator generator(grid, "SEED TBD", 10);
     generator.generate();
 
