@@ -110,16 +110,16 @@ void main_menu::handle_key_event(engine::key_pressed_event& e) {
 		switch (selected_button)
 		{
 		case 0: // NEW GAME
-			state_manager.set_state(game_state::NEW_GAME_SETUP);
+			state_manager.set_state(GAME_STATE::NEW_GAME_SETUP);
 			break;
 		case 1: // LOAD
-			state_manager.set_state(game_state::LOAD_GAME_SELECTION);
+			state_manager.set_state(GAME_STATE::LOAD_GAME_SELECTION);
 			break;
 		case 2: // OPTIONS
-			state_manager.set_state(game_state::OPTIONS);
+			state_manager.set_state(GAME_STATE::OPTIONS);
 			break;
 		case 3: // EXIT
-			state_manager.set_state(game_state::EXIT_LOOP);
+			state_manager.set_state(GAME_STATE::EXIT_LOOP);
 			break;
 		}
 	}

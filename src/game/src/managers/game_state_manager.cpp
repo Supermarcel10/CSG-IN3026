@@ -7,23 +7,19 @@
 
 game_state_manager::game_state_manager(engine::application& engine)
     : engine(engine)
-    , current_state(game_state::MAIN_MENU)
-    , current_progress_state(game_progress_state::NOT_IN_GAME)
+    , current_state(GAME_STATE::MAIN_MENU)
+    , game_paused(true)
 {}
 
 game_state_manager::~game_state_manager() {
     clear_current_layer();
 }
 
-void game_state_manager::set_state(game_state new_state) {
+void game_state_manager::set_state(GAME_STATE new_state) {
     clear_current_layer();
     clear_pause_layer();
     current_state = new_state;
     push_new_layer();
-}
-
-void game_state_manager::set_progress_state(game_progress_state new_state) {
-    current_progress_state = new_state;
 }
 
 void game_state_manager::toggle_pause()
@@ -41,41 +37,39 @@ bool game_state_manager::is_game_paused()
     return game_paused;
 }
 
-game_state game_state_manager::get_state() const {
+GAME_STATE game_state_manager::get_state() const {
     return current_state;
-}
-
-game_progress_state game_state_manager::get_progress_state() const {
-    return current_progress_state;
 }
 
 void game_state_manager::push_new_layer() {
     engine::layer* new_layer = nullptr;
 
     switch (current_state) {
-    case game_state::MAIN_MENU:
+    case GAME_STATE::MAIN_MENU:
         new_layer = new main_menu(*this);
         break;
-    case game_state::OPTIONS:
+    case GAME_STATE::OPTIONS:
         break;
-    case game_state::NEW_GAME_SETUP:
-        current_state = game_state::IN_GAME;
+    case GAME_STATE::NEW_GAME_SETUP:
+        current_state = GAME_STATE::IN_GAME;
         m_pause_layer = new pause_menu(*this);
         new_layer = new main_game(*this);
         break;
-    case game_state::LOAD_GAME_SELECTION:
-        current_state = game_state::IN_GAME;
+    case GAME_STATE::LOAD_GAME_SELECTION:
+        current_state = GAME_STATE::IN_GAME;
         m_pause_layer = new pause_menu(*this);
         new_layer = new main_game(*this);
         break;
-    case game_state::LOADING_GAME:
+    case GAME_STATE::LOADING_GAME:
         break;
-    case game_state::IN_GAME:
-        current_state = game_state::IN_GAME;
+    case GAME_STATE::SAVING_GAME:
+        break;
+    case GAME_STATE::IN_GAME:
+        current_state = GAME_STATE::IN_GAME;
         m_pause_layer = new pause_menu(*this);
         new_layer = new main_game(*this);
         break;
-    case game_state::EXIT_LOOP:
+    case GAME_STATE::EXIT_LOOP:
         engine.exit();
         break;
     }
@@ -95,7 +89,7 @@ void game_state_manager::clear_current_layer() {
 }
 
 void game_state_manager::clear_pause_layer() {
-    if (m_pause_layer != nullptr && current_state != game_state::IN_GAME)
+    if (m_pause_layer != nullptr && current_state != GAME_STATE::IN_GAME)
     {
         engine.pop_layer(m_pause_layer);
         delete m_pause_layer;

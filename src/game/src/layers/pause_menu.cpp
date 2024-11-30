@@ -99,12 +99,12 @@ void pause_menu::handle_key_event(engine::key_pressed_event& e) {
 			break;
 		case 2: // EXIT
             // TODO: Save game prior
-            state_manager.set_state(game_state::EXIT_LOOP);
+            state_manager.set_state(GAME_STATE::EXIT_LOOP);
 			break;
 		case 3: // RETURN TO MENU
             // TODO: Save game prior
             // TODO: Investigate issue where game crashes here
-            state_manager.set_state(game_state::MAIN_MENU);
+            state_manager.set_state(GAME_STATE::MAIN_MENU);
 			break;
 		}
 	}
