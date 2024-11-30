@@ -13,6 +13,7 @@ private:
     static const std::string building_base_path;
     static const float building_scale;
 
+    static const std::string tile_base_path;
     static const float tile_scale;
 
 public:
@@ -51,6 +52,7 @@ public:
     enum class TILE
     {
         GRASS,
+        WATER,
         COAST,
         RIVER,
         ROAD
@@ -109,7 +111,8 @@ private:
         switch (tile)
         {
         case TILE::GRASS: return "grass";
-        case TILE::COAST: return "coast";
+        case TILE::WATER: return "water";
+        case TILE::COAST: return "coast_waterless_A";
         case TILE::RIVER: return "river";
         case TILE::ROAD: return "road";
         }
