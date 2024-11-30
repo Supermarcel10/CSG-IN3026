@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\controlled_layer.h" />
+    <ClInclude Include="src\hex.h" />
     <ClInclude Include="src\hex_grid.h" />
     <ClInclude Include="src\layers\main_game.h" />
     <ClInclude Include="src\layers\main_menu.h" />
@@ -144,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\hex.cpp" />
     <ClCompile Include="src\hex_grid.cpp" />
     <ClCompile Include="src\layers\main_game.cpp" />
     <ClCompile Include="src\layers\main_menu.cpp" />
