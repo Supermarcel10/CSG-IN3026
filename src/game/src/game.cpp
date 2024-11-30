@@ -14,7 +14,7 @@ public:
     game()
         : state_manager(*this)
     {
-        state_manager.set_state(game_state::MAIN_MENU);
+        state_manager.set_state(GAME_STATE::IN_GAME);
     }
 
     //void on_event(engine::event& event) override
