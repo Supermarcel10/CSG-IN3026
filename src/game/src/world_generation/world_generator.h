@@ -2,7 +2,7 @@
 #include "hex_grid.h"
 #include <string>
 #include <random>
-#include "managers/prefabs.h"
+#include "../managers/prefabs.h"
 
 
 class world_generator

@@ -39,7 +39,7 @@ hex_coord hex_grid::world_to_hex(const vec3& pos) const
 
 void hex_grid::add_tile(const hex_coord& coord, ref<prefab_instance> instance, TILE terrain_type)
 {
-    auto new_hex = std::make_shared<hex>(instance, terrain_type);
+    auto new_hex = hex::create_hex(instance, terrain_type);
     tiles[coord] = new_hex;
     // connect_neighbors(coord, new_hex); // TODO: Consider if there should be a final pass for this so everything gets bound nicely.
 }

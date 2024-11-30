@@ -1,5 +1,5 @@
 #include "world_generator.h"
-#include "managers/prefabs.h"
+#include "../managers/prefabs.h"
 
 
 world_generator::world_generator(hex_grid& grid, const std::string& seed, uint16_t size)
@@ -41,7 +41,7 @@ float world_generator::generate_noise(float x, float y) {
         }
 
         return base * edge_factor;
-    };
+        };
 
     // Get heights for the four corners of the current grid cell
     float h00 = get_height(grid_x, grid_y, control_points);

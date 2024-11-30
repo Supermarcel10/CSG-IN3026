@@ -1,7 +1,7 @@
 #pragma once
 #include <engine.h>
 #include <engine/prefabs/prefab.h>
-#include "managers/prefabs.h"
+#include "../managers/prefabs.h"
 
 
 using std::map;
@@ -40,7 +40,18 @@ private:
     //bool is_selected = false;
     //bool is_passable = true;
 
+// Game accessible
 public:
+
+// Namespace accessible
+private:
+    friend class hex_grid;
+
+    // Factory class for friend
+    static ref<hex> create_hex(ref<prefab_instance> instance, TILE terrain_type) {
+        return std::shared_ptr<hex>(new hex(instance, terrain_type));
+    }
+
     hex(ref<prefab_instance> instance, TILE terrain_type);
 
     ref<prefab_instance> get_instance() const { return instance; }

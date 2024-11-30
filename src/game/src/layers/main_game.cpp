@@ -1,7 +1,7 @@
 #include "main_game.h"
 #include "platform/opengl/gl_shader.h"
-#include "../hex_grid.h"
-#include "../world_generator.h"
+#include "../world_generation/hex_grid.h"
+#include "../world_generation/world_generator.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "engine/utils/track.h"

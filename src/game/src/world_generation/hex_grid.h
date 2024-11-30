@@ -30,17 +30,22 @@ private:
     const float hex_height;
     const float row_offset;
 
+// Game accessible
 public:
     explicit hex_grid(float hex_width = 1.0f);
+
+    ref<hex> get_tile(const hex_coord& coord) const;
+
+    map<NEIGHBOR_LOCATION, ref<hex>> get_current_neighbors(const hex_coord& coord) const;
+
+// Namespace accessible
+private:
+    friend class world_generator;
 
     vec3 hex_to_world(const hex_coord& hex) const;
     hex_coord world_to_hex(const vec3& pos) const;
 
     void add_tile(const hex_coord& coord, ref<prefab_instance> instance, TILE terrain_type);
-    ref<hex> get_tile(const hex_coord& coord) const;
 
-    map<NEIGHBOR_LOCATION, ref<hex>> get_current_neighbors(const hex_coord& coord) const;
-
-private:
     void connect_neighbors(const hex_coord& coord, ref<hex> hex) const;
 };
