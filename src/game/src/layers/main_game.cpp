@@ -8,6 +8,8 @@
 #include <engine/prefabs/prefab.h>
 
 
+const auto DEBUG = true;
+
 main_game::main_game(game_state_manager& state_manager)
         : controlled_layer(state_manager)
         , m_2d_camera(-1.6f, 1.6f, -0.9f, 0.9f)
@@ -212,5 +214,13 @@ void main_game::handle_key_event(engine::key_pressed_event& e) {
         // TODO: Investigate issue where pause menu is not triggered first time.
         // Debounce issue?
         state_manager.toggle_pause();
+    }
+
+    // ______________________________________________________
+    if (!DEBUG) return;
+
+    if (key_code == key_codes::KEY_F1)
+    {
+        engine::render_command::toggle_wireframe();
     }
 }
