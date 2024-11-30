@@ -32,40 +32,55 @@ vec3 hex_grid::hex_to_world(const hex_coord& hex) const
 
 hex_coord hex_grid::world_to_hex(const vec3& pos) const
 {
-    int r = static_cast<int>(round(-pos.z / hex_height));
-    int q = static_cast<int>(round((pos.x - (r % 2) * row_offset) / hex_width));
+    uint_fast8_t r = static_cast<uint_fast8_t>(round(-pos.z / hex_height));
+    uint_fast8_t q = static_cast<uint_fast8_t>(round((pos.x - (r % 2) * row_offset) / hex_width));
     return { q, r };
 }
 
-void hex_grid::add_tile(const hex_coord& coord, ref<prefab_instance> instance)
+void hex_grid::add_tile(const hex_coord& coord, ref<prefab_instance> instance, TILE terrain_type)
 {
-    tiles[coord] = instance;
+    auto new_hex = std::make_shared<hex>(instance, terrain_type);
+    tiles[coord] = new_hex;
+    // connect_neighbors(coord, new_hex); // TODO: Consider if there should be a final pass for this so everything gets bound nicely.
 }
 
-ref<prefab_instance> hex_grid::get_tile(const hex_coord& coord) const
+ref<hex> hex_grid::get_tile(const hex_coord& coord) const
 {
     auto it = tiles.find(coord);
     return (it != tiles.end()) ? it->second : nullptr;
 }
 
-vector<hex_coord> hex_grid::get_neighbors(const hex_coord& coord) const
+map<NEIGHBOR_LOCATION, ref<hex>> hex_grid::get_current_neighbors(const hex_coord& coord) const
 {
     using std::pair;
 
-    static const vector<pair<int, int>> even_offsets = {
+    static const vector<pair<int_fast8_t, int_fast8_t>> even_offsets = {
         {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {0, 1}
     };
-    static const vector<pair<int, int>> odd_offsets = {
+    static const vector<pair<int8_t, int8_t>> odd_offsets = {
         {1, 1}, {1, 0}, {0, -1}, {-1, 0}, {-1, 1}, {0, 1}
     };
 
-    vector<hex_coord> neighbors;
     const auto& offsets = (coord.r % 2 == 0) ? even_offsets : odd_offsets;
 
-    for (const auto& [dq, dr] : offsets)
+    map<NEIGHBOR_LOCATION, ref<hex>> neighbors;
+    for (uint_fast8_t i = 0; i < 6; ++i)
     {
-        neighbors.push_back({ coord.q + dq, coord.r + dr });
+        const auto& [dq, dr] = offsets[i];
+        hex_coord neighbor_coord{ coord.q + dq, coord.r + dr };
+
+        auto neighbor = get_tile(neighbor_coord);
+        if (!neighbor) continue;
+
+        auto loc = static_cast<NEIGHBOR_LOCATION>(i);
+        neighbors[loc] = neighbor;
     }
 
     return neighbors;
+}
+
+void hex_grid::connect_neighbors(const hex_coord& coord, ref<hex> hex) const
+{
+    auto neighbors = get_current_neighbors(coord);
+    hex->set_neighbors(neighbors);
 }

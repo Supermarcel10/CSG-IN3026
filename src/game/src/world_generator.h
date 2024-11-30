@@ -2,35 +2,32 @@
 #include "hex_grid.h"
 #include <string>
 #include <random>
+#include "managers/prefabs.h"
 
-
-enum class terrain_type
-{
-    GRASS,
-    COAST,
-    WATER
-};
 
 class world_generator
 {
 private:
     std::mt19937 rng;
     hex_grid& grid;
-    int size;
+    uint_fast16_t size;
     std::string seed;
+    float water_level;
 
 public:
-    world_generator(hex_grid& grid, const std::string& seed, int size);
+    world_generator(hex_grid& grid, const std::string& seed, uint16_t size);
 
     void generate();
 
     const std::string& get_seed() const { return seed; }
-    int get_size() const { return size; }
+    uint16_t get_size() const { return size; }
 
 private:
     void generate_base_terrain();
-    terrain_type determine_terrain_type(const hex_coord& coord);
+    TILE determine_terrain_type(const hex_coord& coord);
 
     float generate_noise(float x, float y);
     float get_terrain_height(const hex_coord& coord);
+
+    static ref<prefab> get_base(TILE type) { return prefabs::get(type); };
 };
