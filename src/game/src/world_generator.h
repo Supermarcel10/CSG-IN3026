@@ -4,6 +4,13 @@
 #include <random>
 
 
+enum class terrain_type
+{
+    GRASS,
+    COAST,
+    WATER
+};
+
 class world_generator
 {
 private:
@@ -22,4 +29,8 @@ public:
 
 private:
     void generate_base_terrain();
+    terrain_type determine_terrain_type(const hex_coord& coord);
+
+    float generate_noise(float x, float y);
+    float get_terrain_height(const hex_coord& coord);
 };
