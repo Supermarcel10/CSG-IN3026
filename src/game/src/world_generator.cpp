@@ -113,9 +113,9 @@ terrain_type world_generator::determine_terrain_type(const hex_coord& coord)
 
 void world_generator::generate_base_terrain()
 {
-    auto grass_base = prefabs::get(prefabs::TILE::GRASS);
-    auto coast_base = prefabs::get(prefabs::TILE::COAST);
-    auto water_base = prefabs::get(prefabs::TILE::WATER);
+    auto grass_base = prefabs::get(TILE::GRASS);
+    auto coast_base = prefabs::get(TILE::COAST);
+    auto water_base = prefabs::get(TILE::WATER);
 
     std::vector<terrain_type> terrain_map;
     terrain_map.reserve(size * size);

@@ -15,11 +15,11 @@ const float prefabs::tile_scale = 1.2f;
 ref<prefab> prefabs::get(BUILDING building, BUILDING_COLOR color)
 {
     auto building_name = enum_to_name(building);
-    std::cout << building_name << std::endl;
+    auto building_color = color_to_name(color);
 
     return engine::prefab_manager::instance().register_prefab(
         building_name,
-        building_base_path + building_name + ".fbx",
+        building_base_path + building_color + "/" + building_name + ".fbx",
         hexagons_texture,
         vec3(0.f, 0.5f, 0.f),
         vec3(-1.f, 0.f, 0.f),

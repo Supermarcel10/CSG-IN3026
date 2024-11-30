@@ -103,14 +103,14 @@ main_game::main_game(game_state_manager& state_manager)
 
     // EXAMPLE BUILDINGS
 
-    auto home = prefabs::get(prefabs::BUILDING::HOME_A);
+    auto home = prefabs::get(BUILDING::HOME_A);
     home->create_instance(vec3(4.f, 0.0f, -4.0f));
 
-    auto archery = prefabs::get(prefabs::BUILDING::ARCHERY_RANGE);
+    auto archery = prefabs::get(BUILDING::ARCHERY_RANGE, BUILDING_COLOR::YELLOW);
     archery->create_instance(vec3(2.f, 0.0f, -4.0f));
 
-    auto barracks = prefabs::get(prefabs::BUILDING::BARRACKS);
-    auto barrack_instance = barracks->create_instance(vec3(6.f, 0.0f, -4.0f));
+    auto barracks = prefabs::get(BUILDING::BARRACKS, BUILDING_COLOR::RED);
+    barracks->create_instance(vec3(6.f, 0.0f, -4.0f));
 
     // ROCK
 

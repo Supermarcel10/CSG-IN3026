@@ -5,6 +5,50 @@
 using engine::ref;
 using engine::prefab;
 
+enum class BUILDING_COLOR
+{
+    BLUE,
+    GREEN,
+    RED,
+    YELLOW
+};
+
+enum class BUILDING
+{
+    ARCHERY_RANGE,
+    BARRACKS,
+    BLACKSMITH,
+    CASTLE,
+    CHURCH,
+    HOME_A,
+    HOME_B,
+    LUMBERMILL,
+    MARKET,
+    MINE,
+    TAVERN,
+    //TOWER_A,
+    //TOWER_B,
+    //TOWER_BASE,
+    //TOWER_CATAPULT,
+    WATERMILL,
+    WELL,
+    WINDMILL // TODO: Test windmill further, since the texture seems malformed.
+};
+
+enum class TILE
+{
+    GRASS,
+    WATER,
+    COAST,
+    RIVER,
+    ROAD
+};
+
+enum class DECORATION
+{
+    PINE_TREE
+};
+
 class prefabs
 {
 private:
@@ -17,52 +61,6 @@ private:
     static const float tile_scale;
 
 public:
-    // TODO: Fix colors, since prior optimisations removed all building colors but blue
-    enum class BUILDING_COLOR
-    {
-        BLUE,
-        GREEN,
-        NEUTRAL,
-        RED,
-        YELLOW
-    };
-
-    enum class BUILDING
-    {
-        ARCHERY_RANGE,
-        BARRACKS,
-        BLACKSMITH,
-        CASTLE,
-        CHURCH,
-        HOME_A,
-        HOME_B,
-        LUMBERMILL,
-        MARKET,
-        MINE,
-        TAVERN,
-        //TOWER_A,
-        //TOWER_B,
-        //TOWER_BASE,
-        //TOWER_CATAPULT,
-        WATERMILL,
-        WELL,
-        WINDMILL // TODO: Test windmill further, since the texture seems malformed.
-    };
-
-    enum class TILE
-    {
-        GRASS,
-        WATER,
-        COAST,
-        RIVER,
-        ROAD
-    };
-
-    enum class DECORATION
-    {
-        PINE_TREE
-    };
-
     static ref<prefab> get(BUILDING building, BUILDING_COLOR color = BUILDING_COLOR::BLUE);
     static ref<prefab> get(TILE tile);
     static ref<prefab> get(DECORATION decoration);
@@ -74,18 +72,17 @@ private:
         {
         case BUILDING_COLOR::BLUE:  return "blue";
         case BUILDING_COLOR::GREEN: return "green";
-        case BUILDING_COLOR::NEUTRAL: return "neutral";
         case BUILDING_COLOR::RED: return "red";
         case BUILDING_COLOR::YELLOW: return "yellow";
         default: return "yellow";
         }
     }
 
-    static std::string enum_to_name(BUILDING color)
+    static std::string enum_to_name(BUILDING building)
     {
-        switch (color)
+        switch (building)
         {
-        case BUILDING::ARCHERY_RANGE: return "archery_range";
+        case BUILDING::ARCHERY_RANGE: return "archeryrange";
         case BUILDING::BARRACKS: return "barracks";
         case BUILDING::BLACKSMITH: return "blacksmith";
         case BUILDING::CASTLE: return "castle";
@@ -103,6 +100,7 @@ private:
         case BUILDING::WATERMILL: return "watermill";
         case BUILDING::WELL: return "well";
         case BUILDING::WINDMILL: return "windmill";
+        default: return "error_texture";
         }
     }
 
@@ -115,6 +113,7 @@ private:
         case TILE::COAST: return "coast_waterless_A";
         case TILE::RIVER: return "river";
         case TILE::ROAD: return "road";
+        default: return "error_texture";
         }
     }
 
@@ -123,6 +122,7 @@ private:
         switch (decoration)
         {
         case DECORATION::PINE_TREE: return "pine_tree";
+        default: return "error_texture";
         }
     }
 };
