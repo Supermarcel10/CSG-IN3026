@@ -3,22 +3,12 @@
 #include <engine/prefabs/prefab.h>
 #include "../managers/prefabs.h"
 #include "hex_coord.h"
+#include "building.h"
 
 
 using std::map;
 using engine::ref;
 using engine::prefab_instance;
-
-//class building
-//{
-//private:
-//    std::string owner;
-//    //building_type;
-//
-//public:
-//    building();
-//    ~building();
-//};
 
 enum NEIGHBOR_LOCATION : uint_fast8_t
 {
@@ -37,7 +27,7 @@ private:
     ref<prefab_instance> instance;
     TILE terrain_type;
     map<NEIGHBOR_LOCATION, ref<hex>> neighbors;
-    ref<prefab_instance> building;
+    ref<building> building_;
 
     bool is_selected = false;
     //bool is_passable = true;
@@ -63,7 +53,7 @@ private:
     }
 
     hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type);
-    hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type, ref<prefab_instance> building);
+    hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type, ref<prefab> building);
 
     ref<prefab_instance> get_instance() const { return instance; }
     TILE get_terrain_type() const { return terrain_type; }

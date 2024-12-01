@@ -241,6 +241,18 @@ namespace engine
             return nullptr;
         }
 
+        void remove_instance(const ref<prefab_instance>& instance) {
+            for (auto& [name, prefab] : m_prefabs) {
+                const auto& instances = prefab->get_instances();
+                
+                auto it = std::find(instances.begin(), instances.end(), instance);
+                if (it != instances.end()) {
+                    prefab->remove_instance(instance);
+                    return;
+                }
+            }
+        }
+
         const std::unordered_map<std::string, ref<prefab>>& get_all_prefabs() const {
             return m_prefabs;
         }

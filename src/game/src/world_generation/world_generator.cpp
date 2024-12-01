@@ -129,7 +129,7 @@ void world_generator::generate_base_terrain()
         for (uint_fast8_t col = 0; col < size; ++col)
         {
             hex_coord coord{ col, row };
-            vec3 world_pos = grid.hex_to_world(coord);
+            vec3 world_pos = coord.to_world();
 
             auto terrain_type = determine_terrain_type(coord);
             ref<prefab_instance> instance = bases[terrain_type]->create_instance(world_pos);

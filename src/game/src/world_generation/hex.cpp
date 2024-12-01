@@ -11,21 +11,22 @@ hex::hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type)
 {
 }
 
-hex::hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type, ref<prefab_instance> building)
+hex::hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type, ref<prefab> building)
 	: coord(coord)
 	, instance(instance)
 	, terrain_type(terrain_type)
-	, building(building)
 {
+	build(building);
 }
 
 void hex::build(ref<prefab> new_building)
 {
-	building = new_building->create_instance(coord.to_world());;
+	auto building_instance = new_building->create_instance(coord.to_world());
+	building_ = ref<building>(new building(building_instance));
 }
 
 void hex::destroy_building()
 {
-	// TODO: Find a way to remove!
-	building = nullptr;
+	engine::prefab_manager::instance().remove_instance(building_->get_instance());
+	building_ = nullptr;
 }
