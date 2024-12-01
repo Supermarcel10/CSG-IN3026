@@ -2,44 +2,14 @@
 #include <cmath>
 
 
-bool hex_coord::operator==(const hex_coord& other) const
-{
-    return q == other.q && r == other.r;
-}
-
-bool hex_coord::operator<(const hex_coord& other) const
-{
-    if (q != other.q)
-    {
-        return q < other.q;
-    }
-    return r < other.r;
-}
-
 hex_grid::hex_grid(float hex_width)
-    : hex_width(hex_width)
-    , hex_height(hex_width * 0.866f)
-    , row_offset(hex_width * 0.5f)
 {
-}
-
-vec3 hex_grid::hex_to_world(const hex_coord& hex) const
-{
-    float x = hex.q * hex_width + (hex.r % 2) * row_offset;
-    float z = hex.r * hex_height * -1.0f;
-    return vec3(x, 0.0f, z);
-}
-
-hex_coord hex_grid::world_to_hex(const vec3& pos) const
-{
-    uint_fast8_t r = static_cast<uint_fast8_t>(round(-pos.z / hex_height));
-    uint_fast8_t q = static_cast<uint_fast8_t>(round((pos.x - (r % 2) * row_offset) / hex_width));
-    return { q, r };
+    hex_coord::init(hex_width);
 }
 
 void hex_grid::add_tile(const hex_coord& coord, ref<prefab_instance> instance, TILE terrain_type)
 {
-    auto new_hex = hex::create_hex(instance, terrain_type);
+    auto new_hex = hex::create_hex(coord, instance, terrain_type);
     tiles[coord] = new_hex;
     // connect_neighbors(coord, new_hex); // TODO: Consider if there should be a final pass for this so everything gets bound nicely.
 }

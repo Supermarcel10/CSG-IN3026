@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="src\controlled_layer.h" />
     <ClInclude Include="src\world_generation\hex.h" />
+    <ClInclude Include="src\world_generation\hex_coord.h" />
     <ClInclude Include="src\world_generation\hex_grid.h" />
     <ClInclude Include="src\layers\main_game.h" />
     <ClInclude Include="src\layers\main_menu.h" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\world_generation\hex.cpp" />
+    <ClCompile Include="src\world_generation\hex_coord.cpp" />
     <ClCompile Include="src\world_generation\hex_grid.cpp" />
     <ClCompile Include="src\layers\main_game.cpp" />
     <ClCompile Include="src\layers\main_menu.cpp" />

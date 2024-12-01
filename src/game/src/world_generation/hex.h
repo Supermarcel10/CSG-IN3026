@@ -2,6 +2,7 @@
 #include <engine.h>
 #include <engine/prefabs/prefab.h>
 #include "../managers/prefabs.h"
+#include "hex_coord.h"
 
 
 using std::map;
@@ -32,30 +33,39 @@ enum NEIGHBOR_LOCATION : uint_fast8_t
 class hex
 {
 private:
-    //hex_coord coord;
+    hex_coord coord;
     ref<prefab_instance> instance;
     TILE terrain_type;
     map<NEIGHBOR_LOCATION, ref<hex>> neighbors;
-    //building building;
-    //bool is_selected = false;
+    ref<prefab_instance> building;
+
+    bool is_selected = false;
     //bool is_passable = true;
 
 // Game accessible
 public:
+    void set_is_selected(bool new_value)
+    {
+        std::cout << "Selected " << static_cast<int>(terrain_type) << std::endl;
+        is_selected = new_value;
+    };
+
+    void build(ref<prefab> new_building);
+    void destroy_building();
 
 // Namespace accessible
 private:
     friend class hex_grid;
 
     // Factory class for friend
-    static ref<hex> create_hex(ref<prefab_instance> instance, TILE terrain_type) {
-        return std::shared_ptr<hex>(new hex(instance, terrain_type));
+    static ref<hex> create_hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type) {
+        return ref<hex>(new hex(coord, instance, terrain_type));
     }
 
-    hex(ref<prefab_instance> instance, TILE terrain_type);
+    hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type);
+    hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type, ref<prefab_instance> building);
 
     ref<prefab_instance> get_instance() const { return instance; }
-
     TILE get_terrain_type() const { return terrain_type; }
 
     const ref<hex> get_neighbor(NEIGHBOR_LOCATION location) { return neighbors[location]; }

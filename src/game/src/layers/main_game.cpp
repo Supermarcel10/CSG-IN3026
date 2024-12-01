@@ -28,7 +28,7 @@ main_game::main_game(game_state_manager& state_manager)
     m_audio_manager->volume("music", .0f);
     // TODO: Expand the audio manager to support layering and transition.
 
-        // Initialise the shaders, materials and lights
+    // Initialise the shaders, materials and lights
     auto mesh_shader = engine::renderer::shaders_library()->get("mesh");
 
     // set color texture unit
@@ -107,13 +107,18 @@ main_game::main_game(game_state_manager& state_manager)
     // EXAMPLE BUILDINGS
 
     auto home = prefabs::get(BUILDING::HOME_A);
-    home->create_instance(vec3(4.f, 0.0f, -4.0f));
+    auto home_tile = grid.get_tile(hex_coord{ 4, 4 });
+    home_tile->build(home);
 
     auto archery = prefabs::get(BUILDING::ARCHERY_RANGE, BUILDING_COLOR::YELLOW);
-    archery->create_instance(vec3(2.f, 0.0f, -4.0f));
+    auto archery_tile = grid.get_tile(hex_coord{ 2, 4 });
+    archery_tile->build(archery);
 
     auto barracks = prefabs::get(BUILDING::BARRACKS, BUILDING_COLOR::RED);
-    barracks->create_instance(vec3(6.f, 0.0f, -4.0f));
+    auto barracks_tile = grid.get_tile(hex_coord{ 6, 4 });
+    barracks_tile->build(barracks);
+
+    barracks_tile->destroy_building();
 
     // ROCK
 
