@@ -1,6 +1,7 @@
 #pragma once
 #include <engine.h>
 #include "engine/events/key_event.h"
+#include <engine/prefabs/prefab.h>
 #include "../controlled_layer.h"
 #include "../managers/prefabs.h"
 #include "../managers/resource_manager.h"
@@ -11,11 +12,16 @@ using glm::vec3;
 using engine::skybox;
 using engine::game_object;
 using engine::material;
+using engine::prefab_instance;
 
 class main_game : public controlled_layer
 {
 private:
     prefabs prefabs;
+    resource_manager resource_manager;
+
+    vector<ref<prefab_instance>> instances;
+
 
     ref<skybox>			m_skybox{};
 
@@ -27,8 +33,6 @@ private:
 
 
     engine::DirectionalLight            m_directionalLight;
-
-    resource_manager            m_resource_manager;
 
     ref<engine::bullet_manager> m_physics_manager{};
     ref<engine::audio_manager>  m_audio_manager{};

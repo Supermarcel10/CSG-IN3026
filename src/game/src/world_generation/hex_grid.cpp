@@ -20,6 +20,22 @@ ref<hex> hex_grid::get_tile(const hex_coord& coord) const
     return (it != tiles.end()) ? it->second : nullptr;
 }
 
+vector<ref<prefab_instance>> hex_grid::get_all_prefab_instances() const {
+    vector<ref<prefab_instance>> instances;
+    instances.reserve(tiles.size());
+
+    for (const auto& [coord, hex_tile] : tiles) {
+        instances.push_back(hex_tile->get_instance());
+
+        ref<building> building = hex_tile->building_;
+        if (building) {
+            instances.push_back(building->get_instance());
+        }
+    }
+
+    return instances;
+}
+
 map<NEIGHBOR_LOCATION, ref<hex>> hex_grid::get_current_neighbors(const hex_coord& coord) const
 {
     using std::pair;
