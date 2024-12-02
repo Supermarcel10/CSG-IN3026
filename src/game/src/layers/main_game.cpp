@@ -12,6 +12,7 @@ const auto DEBUG = true;
 
 main_game::main_game(game_state_manager& state_manager)
     : controlled_layer(state_manager)
+    , m_resource_manager()
     , m_2d_camera(-1.6f, 1.6f, -0.9f, 0.9f)
     , m_3d_camera((float)engine::application::window().width(), (float)engine::application::window().height())
 {

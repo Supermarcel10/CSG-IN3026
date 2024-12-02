@@ -3,6 +3,7 @@
 #include "engine/events/key_event.h"
 #include "../controlled_layer.h"
 #include "../managers/prefabs.h"
+#include "../managers/resource_manager.h"
 
 
 using std::vector;
@@ -26,6 +27,8 @@ private:
 
 
     engine::DirectionalLight            m_directionalLight;
+
+    resource_manager            m_resource_manager;
 
     ref<engine::bullet_manager> m_physics_manager{};
     ref<engine::audio_manager>  m_audio_manager{};
