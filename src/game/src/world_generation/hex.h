@@ -30,7 +30,7 @@ private:
     ref<building> building_;
 
     bool is_selected = false;
-    //bool is_passable = true;
+    bool is_passable = true;
 
 // Game accessible
 public:

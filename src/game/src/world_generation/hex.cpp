@@ -23,10 +23,12 @@ void hex::build(ref<prefab> new_building)
 {
 	auto building_instance = new_building->create_instance(coord.to_world());
 	building_ = ref<building>(new building(building_instance));
+	is_passable = false;
 }
 
 void hex::destroy_building()
 {
 	engine::prefab_manager::instance().remove_instance(building_->get_instance());
 	building_ = nullptr;
+	is_passable = true;
 }
