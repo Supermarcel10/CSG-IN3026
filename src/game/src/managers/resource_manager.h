@@ -3,7 +3,7 @@
 #include <string>
 
 
-enum RESOURCE
+enum RESOURCE : uint_fast8_t
 {
     FOOD,
     GOLD,
