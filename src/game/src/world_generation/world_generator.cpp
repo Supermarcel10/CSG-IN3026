@@ -41,7 +41,7 @@ float world_generator::generate_noise(float x, float y) {
         }
 
         return base * edge_factor;
-        };
+    };
 
     // Get heights for the four corners of the current grid cell
     float h00 = get_height(grid_x, grid_y, control_points);
