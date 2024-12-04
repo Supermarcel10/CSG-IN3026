@@ -23,6 +23,7 @@ public:
 
  // Namespace accessible
 private:
+    friend class hex_grid;
     friend class hex;
 
     ref<prefab_instance> get_instance() { return instance; };

@@ -12,7 +12,7 @@ const auto DEBUG = true;
 
 main_game::main_game(game_state_manager& state_manager)
     : controlled_layer(state_manager)
-    , m_resource_manager()
+    , resource_manager()
     , m_2d_camera(-1.6f, 1.6f, -0.9f, 0.9f)
     , m_3d_camera((float)engine::application::window().width(), (float)engine::application::window().height())
 {
@@ -104,6 +104,8 @@ main_game::main_game(game_state_manager& state_manager)
     // TODO: Create optimisations to not display the sides of tiles if they're unseen.
     world_generator generator(grid, "SEED TBD", 10);
     generator.generate();
+
+    instances = grid.get_all_prefab_instances();
 
     // EXAMPLE BUILDINGS
 

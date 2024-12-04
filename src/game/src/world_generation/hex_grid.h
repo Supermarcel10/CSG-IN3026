@@ -23,6 +23,8 @@ public:
 
     ref<hex> get_tile(const hex_coord& coord) const;
 
+    vector<ref<prefab_instance>> get_all_prefab_instances() const;
+
 // Namespace accessible
 private:
     friend class world_generator;
