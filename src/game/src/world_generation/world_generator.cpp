@@ -1,5 +1,5 @@
 #include "world_generator.h"
-#include "../managers/prefabs.h"
+#include "../managers/prefabs/prefabs.h"
 
 
 world_generator::world_generator(hex_grid& grid, const std::string& seed, uint16_t size)
