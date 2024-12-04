@@ -13,21 +13,17 @@ const auto DEBUG = true;
 main_game::main_game(game_state_manager& state_manager)
     : controlled_layer(state_manager)
     , resource_manager()
+    , audio_manager()
     , m_2d_camera(-1.6f, 1.6f, -0.9f, 0.9f)
     , m_3d_camera((float)engine::application::window().width(), (float)engine::application::window().height())
 {
-    //    engine::input::anchor_mouse(true);
+    // Start background music
+    audio_manager->play("music");
+    audio_manager->volume("music", .0f);
+
+    // engine::input::anchor_mouse(true);
     // TODO: Fix the anchor mouse not existing.
     engine::application::window().show_mouse_cursor();
-
-    // Initialise audio and play background music
-    m_audio_manager = engine::audio_manager::instance();
-    m_audio_manager->init();
-    //    m_audio_manager->load_sound("", engine::sound_type::spatialised, "bounce");
-    m_audio_manager->load_sound("assets/audio/music/peace/2-uplifting.wav", engine::sound_type::track, "music");
-    m_audio_manager->play("music");
-    m_audio_manager->volume("music", .0f);
-    // TODO: Expand the audio manager to support layering and transition.
 
     // Initialise the shaders, materials and lights
     auto mesh_shader = engine::renderer::shaders_library()->get("mesh");

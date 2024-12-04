@@ -5,6 +5,7 @@
 #include "../controlled_layer.h"
 #include "../managers/prefabs.h"
 #include "../managers/resource_manager.h"
+#include "../managers/audio/audio_manager.h"
 
 
 using std::vector;
@@ -19,6 +20,7 @@ class main_game : public controlled_layer
 private:
     prefabs prefabs;
     resource_manager resource_manager;
+    audio_manager audio_manager;
 
     vector<ref<prefab_instance>> instances;
 
