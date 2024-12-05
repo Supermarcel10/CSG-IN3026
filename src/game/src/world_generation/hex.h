@@ -1,7 +1,7 @@
 #pragma once
 #include <engine.h>
 #include <engine/prefabs/prefab.h>
-#include "../managers/prefabs/prefabs.h"
+#include "../managers/prefab/prefabs.h"
 #include "hex_coord.h"
 #include "building.h"
 
