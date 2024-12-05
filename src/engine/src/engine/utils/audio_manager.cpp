@@ -40,9 +40,27 @@ bool engine::audio_manager::init()
 	return result == FMOD_OK;
 }
 
-void engine::audio_manager::on_update() const
+void engine::audio_manager::on_update(const engine::timestep& timestep)
 {
 	m_fmod_system->update();
+
+	for (auto& [name, track] : m_parallel_tracks) {
+		if (track.is_fading) {
+			track.fade_timer += timestep.seconds();
+			float t = std::min(track.fade_timer / track.fade_duration, 1.0f);
+
+			track.current_crossfade = track.current_crossfade +
+				(track.target_crossfade - track.current_crossfade) * t;
+
+			volume(track.track_a, 1.0f - track.current_crossfade);
+			volume(track.track_b, track.current_crossfade);
+
+			if (t >= 1.0f) {
+				track.is_fading = false;
+				track.current_crossfade = track.target_crossfade;
+			}
+		}
+	}
 }
 
 bool engine::audio_manager::clean_all()
@@ -112,13 +130,27 @@ bool engine::audio_manager::load_sound(const std::string& file_path, const engin
 
 	bool result = false;
 	if (type == engine::sound_type::event)
-		result = load_event(file_path, type, name);
+		result = load_event(file_path, name);
 	else if (type == engine::sound_type::track)
-		result = load_track(file_path, type, name);
+		result = load_track(file_path, name);
 	else if (type == engine::sound_type::spatialised)
-		result = load_spatialised_sound(file_path, type, name);
+		result = load_spatialised_sound(file_path, name);
 
 	return result;
+}
+
+bool engine::audio_manager::load_sound(const std::string& file_path_a, const std::string& file_path_b, const std::string& name)
+{
+	auto track_a = name + "_A";
+	auto track_b = name + "_B";
+
+	load_sound(file_path_a, engine::sound_type::track, track_a);
+	load_sound(file_path_b, engine::sound_type::track, track_b);
+
+	parallel_track tracks{ track_a, track_b };
+	m_parallel_tracks[name] = tracks;
+
+	return true;
 }
 
 // Play an event sound
@@ -132,6 +164,17 @@ void engine::audio_manager::play(const std::string& sound, float init_vol)
 	}
 
 	LOG_CORE_ERROR("[sound] Could not play '{0}'.", sound);
+}
+
+void engine::audio_manager::play_parallel(const std::string& name)
+{
+	if (m_parallel_tracks.find(name) == m_parallel_tracks.end())
+		return;
+
+	auto& tracks = m_parallel_tracks[name];
+	auto crossfade = tracks.current_crossfade;
+	play(tracks.track_a, 1.0f - crossfade);
+	play(tracks.track_b, crossfade);
 }
 
 engine::sound* engine::audio_manager::sound(const std::string& sound) const
@@ -185,6 +228,47 @@ void engine::audio_manager::play_spatialised_sound(const std::string& spatialise
 		((engine::spatialised_sound*)spatialised)->play(camera_position, position);
 }
 
+void engine::audio_manager::set_parallel_crossfade(const std::string& name, float target_value, float duration)
+{
+	if (m_parallel_tracks.find(name) == m_parallel_tracks.end())
+		return;
+
+	auto& track = m_parallel_tracks[name];
+	track.target_crossfade = std::clamp(target_value, 0.0f, 1.0f);
+	track.fade_duration = duration;
+	track.fade_timer = 0.0f;
+	track.is_fading = true;
+}
+
+void engine::audio_manager::stop_parallel(const std::string& name)
+{
+    if (m_parallel_tracks.find(name) == m_parallel_tracks.end())
+        return;
+
+    auto& tracks = m_parallel_tracks[name];
+    stop(tracks.track_a);
+    stop(tracks.track_b);
+}
+
+void engine::audio_manager::pause_parallel(const std::string& name)
+{
+    if (m_parallel_tracks.find(name) == m_parallel_tracks.end())
+        return;
+
+    auto& tracks = m_parallel_tracks[name];
+    pause(tracks.track_a);
+    pause(tracks.track_b);
+}
+
+void engine::audio_manager::unpause_parallel(const std::string& name)
+{
+    if (m_parallel_tracks.find(name) == m_parallel_tracks.end())
+        return;
+
+    auto& tracks = m_parallel_tracks[name];
+    unpause(tracks.track_a);
+    unpause(tracks.track_b);
+}
 
 //-----------------------------------------------------------------------------
 

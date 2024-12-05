@@ -17,13 +17,25 @@ namespace engine
 
 	class audio_manager
 	{
-		//-------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	private:
+		struct parallel_track
+		{
+			std::string track_a;
+			std::string track_b;
+			float current_crossfade{ 0.0f };
+			float target_crossfade{ 0.0f };
+			float fade_duration{ 0.0f };
+			float fade_timer{ 0.0f };
+			bool is_fading{ false };
+		};
+
 		FMOD_RESULT                                 result{};
 		/// \brief the global variable for talking to FMOD
 		static FMOD::System* m_fmod_system;
 		/// \brief A map of all the events
 		hash_map<std::string, sound*>               m_sounds{};
+		std::unordered_map<std::string, parallel_track> m_parallel_tracks;
 
 		/// \brief Number of total channels available
 		static uint32_t                             max_channels;
@@ -36,47 +48,44 @@ namespace engine
 
 		//-------------------------------------------------------------------------
 
-		audio_manager() = default;
-
-		//-------------------------------------------------------------------------
-
 	public:
 		~audio_manager();
 
 		//-------------------------------------------------------------------------
 
 		bool init();
-		void on_update() const;
+		void on_update(const engine::timestep& timestep);
 		bool clean_all();
 		void stop_all();
 
 		//-------------------------------------------------------------------------
 
-		/// \brief 
+		/// \brief
 		/// \param filePath Path to the sound file.
 		/// \param type Specifies the properties of the file.
 		/// \param name Unique identifier of the sound.
 		/// \return True if the sound has been loaded correctly.
 		bool load_sound(const std::string& filePath, const sound_type& type, const std::string& name);
+		bool load_sound(const std::string& file_path_a, const std::string& file_path_b, const std::string& name);
 
 		/// \brief plays the specified sound
-		void play(const std::string& sound);
-
+		void play(const std::string& sound, float init_vol = 1.0f);
 		void pause(const std::string& track);
-
 		void unpause(const std::string& track);
-
 		void stop(const std::string& track);
-
 		void volume(const std::string& track, float volume);
-
 		void loop(const std::string& track, bool loop);
+
+        void set_parallel_crossfade(const std::string& name, float target_value, float duration);
+        void play_parallel(const std::string& name);
+        void stop_parallel(const std::string& name);
+        void pause_parallel(const std::string& name);
+        void unpause_parallel(const std::string& name);
 
 		/// \brief Retrieves a pointer to the specified sound
 		sound* sound(const std::string& sound) const;
 
 		void play_spatialised_sound(const std::string& spatialised_sound, glm::vec3 camera_position, glm::vec3 position);
-
 		void update_with_camera(engine::perspective_camera camera);
 
 		//-------------------------------------------------------------------------

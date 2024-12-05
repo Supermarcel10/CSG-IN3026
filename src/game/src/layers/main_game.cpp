@@ -24,10 +24,8 @@ main_game::main_game(game_state_manager& state_manager)
     m_audio_manager = engine::audio_manager::instance();
     m_audio_manager->init();
     //    m_audio_manager->load_sound("", engine::sound_type::spatialised, "bounce");
-    m_audio_manager->load_sound("assets/audio/music/peace/2-uplifting.wav", engine::sound_type::track, "music");
-    m_audio_manager->play("music");
-    m_audio_manager->volume("music", .0f);
-    // TODO: Expand the audio manager to support layering and transition.
+    m_audio_manager->load_sound("assets/audio/music/vtense_A.wav", "assets/audio/music/vtense_B.wav", "music");
+    m_audio_manager->play_parallel("music");
 
     // Initialise the shaders, materials and lights
     auto mesh_shader = engine::renderer::shaders_library()->get("mesh");
@@ -230,5 +228,15 @@ void main_game::handle_key_event(engine::key_pressed_event& e) {
     if (key_code == key_codes::KEY_F1)
     {
         engine::render_command::toggle_wireframe();
+    }
+
+    if (key_code == key_codes::KEY_F9)
+    {
+        m_audio_manager->set_parallel_crossfade("music", 1.0f, 1.0f);
+    }
+
+    if (key_code == key_codes::KEY_F10)
+    {
+        m_audio_manager->set_parallel_crossfade("music", 0.0f, 1.0f);
     }
 }
