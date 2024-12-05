@@ -122,12 +122,12 @@ bool engine::audio_manager::load_sound(const std::string& file_path, const engin
 }
 
 // Play an event sound
-void engine::audio_manager::play(const std::string& sound)
+void engine::audio_manager::play(const std::string& sound, float init_vol)
 {
 	if (m_sounds.find(sound) != m_sounds.end())
 	{
 		if (m_sounds[sound]->type() != sound_type::spatialised)
-			m_sounds[sound]->play();
+			m_sounds[sound]->play(init_vol);
 		return;
 	}
 
@@ -188,12 +188,12 @@ void engine::audio_manager::play_spatialised_sound(const std::string& spatialise
 
 //-----------------------------------------------------------------------------
 
-bool engine::audio_manager::load_event(const std::string& file_path, const engine::sound_type& type, const std::string& name)
+bool engine::audio_manager::load_event(const std::string& file_path, const std::string& name)
 {
 	auto event = new engine::event_sound(name);
 	if (event->load(file_path))
 	{
-		event->set_type(type);
+		event->set_type(engine::sound_type::event);
 		m_sounds[name] = event;
 		return true;
 	}
@@ -203,7 +203,7 @@ bool engine::audio_manager::load_event(const std::string& file_path, const engin
 	return false;
 }
 
-bool engine::audio_manager::load_track(const std::string& file_path, const engine::sound_type& type, const std::string& name)
+bool engine::audio_manager::load_track(const std::string& file_path, const std::string& name)
 {
 	// block track creation when no more channels are available
 	if (used_channels >= max_channels)
@@ -216,7 +216,7 @@ bool engine::audio_manager::load_track(const std::string& file_path, const engin
 	auto track = new engine::track(name);
 	if (track->load(file_path))
 	{
-		track->set_type(type);
+		track->set_type(engine::sound_type::track);
 		m_sounds[name] = track;
 		++used_channels;
 
@@ -231,12 +231,12 @@ bool engine::audio_manager::load_track(const std::string& file_path, const engin
 }
 
 // Load an event sound
-bool engine::audio_manager::load_spatialised_sound(const std::string& file_path, const engine::sound_type& type, const std::string name)
+bool engine::audio_manager::load_spatialised_sound(const std::string& file_path, const std::string name)
 {
 	auto spatialised = new engine::spatialised_sound(name);
 	if (spatialised->load(file_path))
 	{
-		spatialised->set_type(type);
+		spatialised->set_type(engine::sound_type::spatialised);
 		m_sounds[name] = spatialised;
 		return true;
 	}

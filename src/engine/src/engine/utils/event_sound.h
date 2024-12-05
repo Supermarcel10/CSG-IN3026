@@ -8,12 +8,11 @@ namespace engine
 	{
 
 	public:
-		event_sound() = default;
 		event_sound(const std::string& name);
 		~event_sound() = default;
 
 		bool load(const std::string& file_path, bool loop = false);
-		bool play() override;
+		bool play(float init_vol = 1.0f) override;
 
 	};
 
@@ -22,12 +21,11 @@ namespace engine
 	{
 
 	public:
-		spatialised_sound() = default;
 		spatialised_sound(const std::string& name);
 		~spatialised_sound() = default;
 
 		bool load(const std::string& file_path);
-		bool play(glm::vec3 camera_position, glm::vec3 position);
+		bool play(glm::vec3 camera_position, glm::vec3 position, float init_vol = 1.0f);
 
 	};
 }

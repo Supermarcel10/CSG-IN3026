@@ -17,10 +17,11 @@ bool engine::event_sound::load(const std::string& filePath, bool loop /*= false*
 	return result == FMOD_OK;
 }
 
-bool engine::event_sound::play()
+bool engine::event_sound::play(float init_vol)
 {
 	auto result = engine::audio_manager::system()->playSound(m_sound, NULL, false, &m_channel);
 	engine::audio_manager::fmod_error_check(result);
+	//volume(init_vol);
 	return result == FMOD_OK;
 }
 
@@ -43,7 +44,7 @@ bool engine::spatialised_sound::load(const std::string& filePath)
 	return result == FMOD_OK;
 }
 
-bool engine::spatialised_sound::play(glm::vec3 camera_position, glm::vec3 position)
+bool engine::spatialised_sound::play(glm::vec3 camera_position, glm::vec3 position, float init_vol)
 {
 	// Set position and velocity of listener based on the camera
 	FMOD_VECTOR pos, vel;
@@ -60,11 +61,10 @@ bool engine::spatialised_sound::play(glm::vec3 camera_position, glm::vec3 positi
 	listenerPosition.z = camera_position.z;
 
 	// Play the sound
-	float volume = 1.0f;
 	auto result = engine::audio_manager::system()->playSound(m_sound, NULL, false, &m_channel);
-	result = m_channel->setVolume(1.0);
+	result = m_channel->setVolume(init_vol);
 	m_channel->set3DMinMaxDistance(1.0, 50.0);
-	m_channel->set3DAttributes(&pos, &vel);	 // The the 3D position of the sound
+	m_channel->set3DAttributes(&pos, &vel);	 // The 3D position of the sound
 
 
 	engine::audio_manager::fmod_error_check(result);

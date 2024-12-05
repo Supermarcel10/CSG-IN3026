@@ -89,9 +89,9 @@ namespace engine
 
 
 	private:
-		bool load_event(const std::string& filePath, const engine::sound_type& type, const std::string& name);
-		bool load_track(const std::string& filePath, const engine::sound_type& type, const std::string& name);
-		bool load_spatialised_sound(const std::string& filePath, const engine::sound_type& type, const std::string name);
+		bool load_event(const std::string& filePath, const std::string& name);
+		bool load_track(const std::string& filePath, const std::string& name);
+		bool load_spatialised_sound(const std::string& filePath, const std::string name);
 
 		//-------------------------------------------------------------------------
 	public:
