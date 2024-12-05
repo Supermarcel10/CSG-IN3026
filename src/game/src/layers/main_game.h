@@ -3,8 +3,8 @@
 #include "engine/events/key_event.h"
 #include <engine/prefabs/prefab.h>
 #include "../controlled_layer.h"
-#include "../managers/prefabs.h"
-#include "../managers/resource_manager.h"
+#include "../managers/prefab/prefabs.h"
+#include "../managers/resource/resource_manager.h"
 
 
 using std::vector;

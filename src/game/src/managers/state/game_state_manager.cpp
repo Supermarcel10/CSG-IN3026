@@ -1,8 +1,8 @@
 #include "game_state_manager.h"
 
-#include "../layers/main_menu.h"
-#include "../layers/main_game.h"
-#include "../layers/pause_menu.h"
+#include "../../layers/main_menu.h"
+#include "../../layers/main_game.h"
+#include "../../layers/pause_menu.h"
 
 
 game_state_manager::game_state_manager(engine::application& engine)

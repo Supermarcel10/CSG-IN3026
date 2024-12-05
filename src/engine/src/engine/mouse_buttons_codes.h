@@ -2,6 +2,7 @@
 
 namespace  engine
 {
+public:
     /// \brief Mouse button codes from glf3.h
     class mouse_button_codes
     {
