@@ -5,12 +5,47 @@
 using engine::ref;
 using engine::prefab;
 
-enum class BUILDING_COLOR : uint_fast8_t
+enum class COLOR : uint_fast8_t
 {
     BLUE,
     GREEN,
     RED,
     YELLOW
+};
+
+enum class UNIT : uint_fast8_t
+{
+    // BANNER?
+    // PROJECTILE_ARROW
+    // CART_MERCHANT
+    SHIP,
+    CANNON,
+    CATAPULT,
+    CART,
+    HORSE,
+    BASE_UNIT
+};
+
+enum class UNIT_TOOL : uint_fast8_t
+{
+    HELMET,
+    BOW,
+    SHIELD,
+    SWORD,
+    SPEAR
+};
+
+enum class UNIT_VARIANT : uint_fast8_t
+{
+    FULL,
+    ACCENT
+};
+
+enum class PROJECTILE : uint_fast8_t
+{
+    ARROW,
+    CANNON_BALL,
+    CATAPULT
 };
 
 enum class BUILDING : uint_fast8_t
@@ -44,6 +79,14 @@ enum class TILE : uint_fast8_t
     ROAD
 };
 
+enum class SEASON : uint_fast8_t
+{
+    SUMMER,
+    SPRING,
+    WINTER,
+    FALL
+};
+
 enum class DECORATION : uint_fast8_t
 {
     PINE_TREE
@@ -52,7 +95,10 @@ enum class DECORATION : uint_fast8_t
 class prefabs
 {
 private:
-    static const std::string hexagons_texture;
+    static const std::string base_texture;
+
+    static const std::string unit_base_path;
+    static const float prefabs::unit_scale;
 
     static const std::string building_base_path;
     static const float building_scale;
@@ -61,20 +107,85 @@ private:
     static const float tile_scale;
 
 public:
-    static ref<prefab> get(BUILDING building, BUILDING_COLOR color = BUILDING_COLOR::BLUE);
-    static ref<prefab> get(TILE tile);
+    static ref<prefab> get(
+        UNIT unit,
+        COLOR color = COLOR::BLUE,
+        UNIT_VARIANT variant = UNIT_VARIANT::FULL
+    );
+
+    // TODO: For support of tools later on
+    //static ref<prefab> get(
+    //    vector<UNIT_TOOL> tools,
+    //    COLOR color = COLOR::BLUE,
+    //    UNIT_VARIANT variant = UNIT_VARIANT::FULL
+    //);
+
+    static ref<prefab> get(
+        BUILDING building,
+        COLOR color = COLOR::BLUE
+    );
+
+    static ref<prefab> get(TILE tile, SEASON season = SEASON::SPRING);
     static ref<prefab> get(DECORATION decoration);
 
 private:
-    static std::string color_to_name(BUILDING_COLOR color)
+    static std::string color_to_name(COLOR color)
     {
         switch (color)
         {
-        case BUILDING_COLOR::BLUE:  return "blue";
-        case BUILDING_COLOR::GREEN: return "green";
-        case BUILDING_COLOR::RED: return "red";
-        case BUILDING_COLOR::YELLOW: return "yellow";
+        case COLOR::BLUE:  return "blue";
+        case COLOR::GREEN: return "green";
+        case COLOR::RED: return "red";
+        case COLOR::YELLOW: return "yellow";
         default: return "yellow";
+        }
+    }
+
+    static std::string enum_to_name(UNIT unit)
+    {
+        switch (unit)
+        {
+        case UNIT::SHIP:  return "ship";
+        case UNIT::CANNON: return "cannon";
+        case UNIT::CATAPULT: return "catapult";
+        case UNIT::CART: return "cart";
+        case UNIT::HORSE: return "horse";
+        case UNIT::BASE_UNIT: return "unit";
+        default: return "error_texture";
+        }
+    }
+
+    static std::string enum_to_name(UNIT_TOOL tool)
+    {
+        switch (tool)
+        {
+        case UNIT_TOOL::HELMET:  return "helmet";
+        case UNIT_TOOL::BOW: return "bow";
+        case UNIT_TOOL::SHIELD: return "shield";
+        case UNIT_TOOL::SWORD: return "sword";
+        case UNIT_TOOL::SPEAR: return "spear";
+        default: return "error_texture";
+        }
+    }
+
+    static std::string enum_to_name(UNIT_VARIANT variant)
+    {
+        switch (variant)
+        {
+        case UNIT_VARIANT::FULL:  return "_full";
+        case UNIT_VARIANT::ACCENT: return "_accent";
+        default: return "_full";
+        }
+    }
+
+    static std::string enum_to_name(PROJECTILE projectile)
+    {
+        switch (projectile)
+        {
+        case PROJECTILE::ARROW:  return "arrow";
+        case PROJECTILE::CANNON_BALL: return "cannonball";
+        case PROJECTILE::CATAPULT: return "catapult";
+        default: return "error_texture";
         }
     }
 
@@ -101,6 +212,18 @@ private:
         case BUILDING::WELL: return "well";
         case BUILDING::WINDMILL: return "windmill";
         default: return "error_texture";
+        }
+    }
+
+    static std::string get_season_texture(SEASON season)
+    {
+        switch (season)
+        {
+        case SEASON::SUMMER: return "assets/textures/hexagons_medieval_Summer.png";
+        case SEASON::SPRING: return "assets/textures/hexagons_medieval_Spring.png";
+        case SEASON::WINTER: return "assets/textures/hexagons_medieval_Winter.png";
+        case SEASON::FALL: return "assets/textures/hexagons_medieval_Fall.png";
+        default: return "assets/textures/hexagons_medieval_Fall.png";
         }
     }
 
