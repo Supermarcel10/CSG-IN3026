@@ -1,6 +1,6 @@
 #pragma once
 #include <engine.h>
-#include "managers/game_state_manager.h"
+#include "managers/state/game_state_manager.h"
 
 
 class controlled_layer : public engine::layer

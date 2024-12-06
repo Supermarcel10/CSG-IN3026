@@ -1,7 +1,7 @@
 // --------- Entry Point ---------------
 #include "engine/core/entry_point.h"
 #include "engine/events/key_event.h"
-#include "managers/game_state_manager.h"
+#include "managers/state/game_state_manager.h"
 #include <engine/key_codes.h>
 
 

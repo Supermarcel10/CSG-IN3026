@@ -15,10 +15,11 @@ bool engine::track::load(const std::string& file_path)
 	return result == FMOD_OK;
 }
 
-bool engine::track::play()
+bool engine::track::play(float init_vol)
 {
 	auto result = engine::audio_manager::system()->playSound(m_sound, NULL, false, &m_channel);
 	engine::audio_manager::fmod_error_check(result);
+	volume(init_vol);
 	return result == FMOD_OK;
 }
 

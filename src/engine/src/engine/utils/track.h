@@ -7,12 +7,11 @@ namespace engine
 	class track : public sound
 	{
 	public:
-		track() = default;
 		track(const std::string& name);
 		~track() = default;
 
 		bool load(const std::string& file_path);
-		bool play() override;
+		bool play(float init_vol = 1.0f) override;
 		bool pause();
 		bool unpause();
 		bool stop() const;
