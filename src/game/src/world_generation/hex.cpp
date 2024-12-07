@@ -11,18 +11,10 @@ hex::hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type)
 {
 }
 
-hex::hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type, ref<prefab> building)
-	: coord(coord)
-	, instance(instance)
-	, terrain_type(terrain_type)
-{
-	build(building);
-}
-
-void hex::build(ref<prefab> new_building)
+void hex::build(ref<prefab> new_building, ACTOR owner)
 {
 	auto building_instance = new_building->create_instance(coord.to_world());
-	building_ = ref<building>(new building(building_instance));
+	building_ = ref<building>(new building(building_instance, owner));
 	is_passable = false;
 }
 

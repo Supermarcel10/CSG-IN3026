@@ -17,7 +17,7 @@ class hex_grid
 private:
     std::map<hex_coord, ref<hex>> tiles;
 
-// Game accessible
+// Game Accessible
 public:
     explicit hex_grid(float hex_width = 1.0f);
 
@@ -25,7 +25,7 @@ public:
 
     vector<ref<prefab_instance>> get_all_prefab_instances() const;
 
-// Namespace accessible
+// Friend Accessible
 private:
     friend class world_generator;
 

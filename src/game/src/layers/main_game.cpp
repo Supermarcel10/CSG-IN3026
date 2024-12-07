@@ -109,15 +109,15 @@ main_game::main_game(game_state_manager& state_manager)
 
     auto home = prefabs::get(BUILDING::HOME_A);
     auto home_tile = grid.get_tile(hex_coord{ 4, 4 });
-    home_tile->build(home);
+    home_tile->build(home, ACTOR::PLAYER);
 
-    auto archery = prefabs::get(BUILDING::ARCHERY_RANGE, BUILDING_COLOR::YELLOW);
+    auto archery = prefabs::get(BUILDING::ARCHERY_RANGE, COLOR::YELLOW);
     auto archery_tile = grid.get_tile(hex_coord{ 2, 4 });
-    archery_tile->build(archery);
+    archery_tile->build(archery, ACTOR::UNOWNED);
 
-    auto barracks = prefabs::get(BUILDING::BARRACKS, BUILDING_COLOR::RED);
+    auto barracks = prefabs::get(BUILDING::BARRACKS, COLOR::RED);
     auto barracks_tile = grid.get_tile(hex_coord{ 6, 4 });
-    barracks_tile->build(barracks);
+    barracks_tile->build(barracks, ACTOR::ENEMY1);
 
     barracks_tile->destroy_building();
 
@@ -167,6 +167,7 @@ void main_game::on_update(const engine::timestep& time_step)
 
     m_mannequin->animated_mesh()->on_update(time_step);
 
+    m_audio_manager->on_update(time_step);
     m_audio_manager->update_with_camera(m_3d_camera);
 }
 

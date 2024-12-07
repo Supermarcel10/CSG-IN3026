@@ -3,7 +3,8 @@
 #include <engine/prefabs/prefab.h>
 #include "../managers/prefab/prefabs.h"
 #include "hex_coord.h"
-#include "building.h"
+#include "../core/buildings/building.h"
+#include "../core/units/unit.h"
 
 
 using std::map;
@@ -28,6 +29,7 @@ private:
     TILE terrain_type;
     map<NEIGHBOR_LOCATION, ref<hex>> neighbors;
     ref<building> building_;
+    ref<unit> unit;
 
     bool is_selected = false;
     bool is_passable = true;
@@ -40,10 +42,10 @@ public:
         is_selected = new_value;
     };
 
-    void build(ref<prefab> new_building);
+    void build(ref<prefab> new_building, ACTOR owner);
     void destroy_building();
 
-// Namespace accessible
+// Friend Accessible
 private:
     friend class hex_grid;
 
@@ -53,7 +55,6 @@ private:
     }
 
     hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type);
-    hex(hex_coord coord, ref<prefab_instance> instance, TILE terrain_type, ref<prefab> building);
 
     ref<prefab_instance> get_instance() const { return instance; }
     TILE get_terrain_type() const { return terrain_type; }
