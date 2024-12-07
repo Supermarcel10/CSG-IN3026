@@ -29,7 +29,7 @@ private:
     TILE terrain_type;
     map<NEIGHBOR_LOCATION, ref<hex>> neighbors;
     ref<building> building_;
-    ref<unit> unit;
+    ref<unit> unit_;
 
     bool is_selected = false;
     bool is_passable = true;
@@ -42,8 +42,11 @@ public:
         is_selected = new_value;
     };
 
-    void build(ref<prefab> new_building, ACTOR owner);
-    void destroy_building();
+    bool build(ref<prefab> new_building, ACTOR owner);
+    bool destroy_building();
+
+    bool spawn_unit(ref<prefab> new_unit, ACTOR owner);
+    bool destroy_unit();
 
 // Friend Accessible
 private:

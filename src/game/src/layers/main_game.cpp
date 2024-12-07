@@ -107,19 +107,31 @@ main_game::main_game(game_state_manager& state_manager)
 
     // EXAMPLE BUILDINGS
 
-    auto home = prefabs::get(BUILDING::HOME_A);
-    auto home_tile = grid.get_tile(hex_coord{ 4, 4 });
-    home_tile->build(home, ACTOR::PLAYER);
-
+    auto blue_home = prefabs::get(BUILDING::HOME_A);
+    auto red_home = prefabs::get(BUILDING::HOME_A, COLOR::RED);
     auto archery = prefabs::get(BUILDING::ARCHERY_RANGE, COLOR::YELLOW);
-    auto archery_tile = grid.get_tile(hex_coord{ 2, 4 });
-    archery_tile->build(archery, ACTOR::UNOWNED);
-
     auto barracks = prefabs::get(BUILDING::BARRACKS, COLOR::RED);
+
+    grid.get_tile(hex_coord{ 4, 4 })->build(blue_home, ACTOR::PLAYER);
+    grid.get_tile(hex_coord{ 8, 4 })->build(red_home, ACTOR::PLAYER);
+    grid.get_tile(hex_coord{ 2, 4 })->build(archery, ACTOR::UNOWNED);
+
     auto barracks_tile = grid.get_tile(hex_coord{ 6, 4 });
     barracks_tile->build(barracks, ACTOR::ENEMY1);
-
     barracks_tile->destroy_building();
+
+    // EXAMPLE UNITS
+
+    auto blue_unit = prefabs::get(UNIT::BASE_UNIT, COLOR::BLUE);
+    auto red_unit = prefabs::get(UNIT::BASE_UNIT, COLOR::RED);
+    auto catapult = prefabs::get(UNIT::CATAPULT, COLOR::BLUE);
+
+    grid.get_tile(hex_coord{ 1, 1 })->spawn_unit(blue_unit, ACTOR::PLAYER);
+    grid.get_tile(hex_coord{ 2, 1 })->spawn_unit(blue_unit, ACTOR::PLAYER);
+    grid.get_tile(hex_coord{ 1, 2 })->spawn_unit(blue_unit, ACTOR::PLAYER);
+    grid.get_tile(hex_coord{ 2, 2 })->spawn_unit(catapult, ACTOR::PLAYER);
+
+    grid.get_tile(hex_coord{ 4, 2 })->spawn_unit(red_unit, ACTOR::ENEMY1);
 
     // ROCK
 
