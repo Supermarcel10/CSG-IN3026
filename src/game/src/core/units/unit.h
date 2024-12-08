@@ -18,7 +18,7 @@ enum UNIT_CLASS : uint_fast8_t
 
 class unit : public instantiable, protected ownable, public destroyable
 {
-private:
+protected:
 	UNIT_CLASS unit_class_;
 	UNIT unit_type_;
 	//vector<UNIT_TOOL> tools;
