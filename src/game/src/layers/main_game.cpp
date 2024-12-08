@@ -58,14 +58,6 @@ main_game::main_game(game_state_manager& state_manager)
         glm::ortho(0.f, (float)engine::application::window().width(), 0.f,
             (float)engine::application::window().height()));
 
-    mannequin_material_ = engine::material::create(
-        1.0f,
-        vec3(0.5f, 0.5f, 0.5f),
-        vec3(0.5f, 0.5f, 0.5f),
-        vec3(0.5f, 0.5f, 0.5f),
-        1.0f
-    );
-
     skybox_ = skybox::create(40.f,
         {
             engine::texture_2d::create("assets/textures/skybox/front.jpg", true),
@@ -76,29 +68,8 @@ main_game::main_game(game_state_manager& state_manager)
             engine::texture_2d::create("assets/textures/skybox/bot.jpg", true)
         });
 
-    // Orc warrior from https://sketchfab.com/3d-models/orc-warrior-4f8e272891a449c8935285eab8a3a2f9
-    vector<ref<engine::texture_2d>> mannequin_textures;
-    mannequin_textures.push_back(engine::texture_2d::create("assets/textures/warrior_DefaultMaterial_BaseColor.png", false));
-    mannequin_textures.push_back(engine::texture_2d::create("assets/textures/weapon_DefaultMaterial_BaseColor.png", false));
-    ref<engine::skinned_mesh> m_skinned_mesh = engine::skinned_mesh::create("assets/models/animated/warrior/warrior_animation.fbx");
-    m_skinned_mesh->switch_root_movement(false);
-    m_skinned_mesh->set_textures(mannequin_textures);
-
-    engine::game_object_properties mannequin_props;
-    mannequin_props.animated_mesh = m_skinned_mesh;
-    mannequin_props.scale = vec3(0.7f);
-    mannequin_props.position = vec3(2.0f, 0.5f, -5.0f);
-    mannequin_props.textures = mannequin_textures;
-    mannequin_props.type = 0;
-    mannequin_props.bounding_shape = m_skinned_mesh->size() / 2.f * mannequin_props.scale.x;
-    mannequin_ = game_object::create(mannequin_props);
-
-    // CLOUD
-    // TODO: See if the cloud can be made into a primitive instead to hit the requirements for Milestone 2.
-
     // TERRAIN
     hex_grid grid(1.0f);
-    // TODO: Sort out seed stuff!
     // TODO: Create optimisations to not display the sides of tiles if they're unseen.
     world_generator generator(grid, "SEED TBD", 10);
     generator.generate();
@@ -172,8 +143,6 @@ main_game::main_game(game_state_manager& state_manager)
     // BINDING OBJECTS
 
     text_manager = engine::text_manager::create();
-
-    m_skinned_mesh->switch_animation(6);
 }
 
 void main_game::on_update(const engine::timestep& time_step)
@@ -181,8 +150,6 @@ void main_game::on_update(const engine::timestep& time_step)
     camera_3d_.on_update(time_step);
 
     // physics_manager->dynamics_world_update(objects, double(time_step));
-
-    mannequin_->animated_mesh()->on_update(time_step);
 
     audio_manager->on_update(time_step);
     audio_manager->update_with_camera(camera_3d_);
@@ -210,8 +177,18 @@ void main_game::on_render()
 
     engine::prefab_renderer::render_all(mesh_shader);
 
-    rock_material_->submit(mesh_shader);
-    engine::renderer::submit(mesh_shader, rock_);
+    //rock_material_->submit(mesh_shader);
+    //engine::renderer::submit(mesh_shader, rock_);
+
+
+    // RENDER UI
+    // Setup
+    const auto window_x = engine::application::window().width();
+    const auto window_y = engine::application::window().height();
+
+    // 100 x 100 grid for placement simplicity
+    const float x = window_x / 100.f;
+    const float y = window_y / 100.f;
 
     //#050a0c (5, 10, 12)
     const glm::vec4 white_color = glm::vec4(

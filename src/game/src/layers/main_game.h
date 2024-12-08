@@ -30,9 +30,6 @@ private:
 
     ref<skybox>			skybox_{};
 
-    ref<game_object>	mannequin_{};
-    ref<material>		mannequin_material_{};
-
     ref<game_object>    rock_{};
     ref<material>       rock_material_{};
 
