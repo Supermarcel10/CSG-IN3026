@@ -23,9 +23,8 @@ main_game::main_game(game_state_manager& state_manager)
     // Initialise audio and play background music
     audio_manager = engine::audio_manager::instance();
     audio_manager->init();
-    // audio_manager->load_sound("", engine::sound_type::spatialised, "bounce");
     audio_manager->load_sound("assets/audio/music/vtense_A.wav", "assets/audio/music/vtense_B.wav", "music");
-    //audio_manager->play_parallel("music");
+    audio_manager->play_parallel("music");
 
     // Initialise the shaders, materials and lights
     auto mesh_shader = engine::renderer::shaders_library()->get("mesh");

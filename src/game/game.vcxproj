@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\controlled_layer.h" />
+    <ClInclude Include="src\core\projectiles\projectile.h" />
     <ClInclude Include="src\core\properties.h" />
     <ClInclude Include="src\core\units\unit_factory.h" />
     <ClInclude Include="src\managers\resource\resource_manager.h" />
@@ -171,6 +172,9 @@
     <ProjectReference Include="..\engine\engine.vcxproj">
       <Project>{FBDB78FB-E77D-A3D1-D038-B725BC792A22}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\audio\sound\unit\cannon_shoot.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
