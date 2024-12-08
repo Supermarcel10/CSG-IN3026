@@ -190,7 +190,6 @@ void main_game::on_update(const engine::timestep& time_step)
 
 void main_game::on_render()
 {
-    engine::render_command::clear_color({0.2f, 0.3f, 0.3f, 1.0f});
     engine::render_command::clear();
 
     // Set up  shader. (renders textures and materials)
@@ -214,8 +213,26 @@ void main_game::on_render()
     rock_material_->submit(mesh_shader);
     engine::renderer::submit(mesh_shader, rock_);
 
-    mannequin_material_->submit(mesh_shader);
-    engine::renderer::submit(mesh_shader, mannequin_);
+    //#050a0c (5, 10, 12)
+    const glm::vec4 white_color = glm::vec4(
+        (float)255 / 255,
+        (float)255 / 255,
+        (float)255 / 255,
+        1.f
+    );
+
+    // Resources
+    auto gold_count = std::to_string(resource_manager.get_resource_amount(RESOURCE::GOLD));
+    text_manager->render_text("Gold: " + gold_count, x * 30.f, y * 95.f, 0.5f, white_color, "assets/fonts/Title.ttf");
+
+    auto wood_count = std::to_string(resource_manager.get_resource_amount(RESOURCE::WOOD));
+    text_manager->render_text("Wood: " + wood_count, x * 40.f, y * 95.f, 0.5f, white_color, "assets/fonts/Title.ttf");
+
+    auto stone_count = std::to_string(resource_manager.get_resource_amount(RESOURCE::STONE));
+    text_manager->render_text("Stone: " + stone_count, x * 50.f, y * 95.f, 0.5f, white_color, "assets/fonts/Title.ttf");
+
+    auto metal_count = std::to_string(resource_manager.get_resource_amount(RESOURCE::METAL));
+    text_manager->render_text("Metal: " + metal_count, x * 60.f, y * 95.f, 0.5f, white_color, "assets/fonts/Title.ttf");
 
     engine::renderer::end_scene();
 }
