@@ -43,6 +43,9 @@ public:
 		health = initial_health;
 	};
 
+	virtual void update_health(uint_fast8_t new_health) = 0;
+
+protected:
 	bool set_health(uint_fast8_t new_health) {
 		if (health <= 0)
 		{
@@ -54,8 +57,6 @@ public:
 			return true;
 		}
 	};
-
-	virtual void update_health(uint_fast8_t new_health) = 0;
 };
 
 class instantiable
