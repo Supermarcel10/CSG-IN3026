@@ -27,11 +27,18 @@ ref<prefab> prefabs::get(
 
     auto name = unit_color + "/" + unit_name + unit_variant;
 
+    // TODO: Debug why offset isn't actually being applied in any of these cases
+    vec3 offset = vec3(0.f, 0.5f, 0.f);
+    if (unit == UNIT::SHIP)
+    {
+        offset = vec3(0.f, -0.5f, 0.f);
+    }
+
     return engine::prefab_manager::instance().register_prefab(
         name,
         unit_base_path + name + ".fbx",
         base_texture,
-        vec3(0.f, 0.5f, 0.f),
+        offset,
         vec3(-1.f, 0.f, 0.f),
         radians(90.0f),
         unit_scale
