@@ -135,8 +135,10 @@
   <ItemGroup>
     <ClInclude Include="src\controlled_layer.h" />
     <ClInclude Include="src\core\properties.h" />
+    <ClInclude Include="src\core\units\unit_factory.h" />
     <ClInclude Include="src\managers\resource\resource_manager.h" />
     <ClInclude Include="src\core\buildings\building.h" />
+    <ClInclude Include="src\managers\unit\unit_manager.h" />
     <ClInclude Include="src\world_generation\hex.h" />
     <ClInclude Include="src\world_generation\hex_coord.h" />
     <ClInclude Include="src\world_generation\hex_grid.h" />
@@ -149,9 +151,11 @@
     <ClInclude Include="src\world_generation\world_generator.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\units\unit_factory.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\managers\resource\resource_manager.cpp" />
     <ClCompile Include="src\core\buildings\building.cpp" />
+    <ClCompile Include="src\managers\unit\unit_manager.cpp" />
     <ClCompile Include="src\world_generation\hex.cpp" />
     <ClCompile Include="src\world_generation\hex_coord.cpp" />
     <ClCompile Include="src\world_generation\hex_grid.cpp" />
@@ -160,7 +164,7 @@
     <ClCompile Include="src\layers\pause_menu.cpp" />
     <ClCompile Include="src\managers\state\game_state_manager.cpp" />
     <ClCompile Include="src\managers\prefab\prefabs.cpp" />
-    <ClCompile Include="src\core\units\unit.cpp" />
+    <ClCompile Include="src\core\units\attack_unit.h" />
     <ClCompile Include="src\world_generation\world_generator.cpp" />
   </ItemGroup>
   <ItemGroup>

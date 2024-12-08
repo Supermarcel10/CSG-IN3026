@@ -1,5 +1,6 @@
 #include "hex.h"
 #include "glm/glm.hpp"
+#include "../managers/unit/unit_manager.h"
 
 
 using glm::vec3;
@@ -44,9 +45,11 @@ bool hex::spawn_unit(ref<prefab> new_unit, ACTOR owner)
 	{
 		return false;
 	}
-	
-	auto building_instance = new_unit->create_instance(coord.to_world());
-	building_ = ref<building>(new building(building_instance, owner));
+
+	auto unit_type = UNIT::BASE_UNIT;
+	auto unit_instance = new_unit->create_instance(coord.to_world());
+
+	unit_ = unit_manager::add_unit(unit_type, unit_instance, owner);
 	is_passable = false;
 
 	return true;
@@ -60,6 +63,12 @@ bool hex::destroy_unit()
 	}
 
 	engine::prefab_manager::instance().remove_instance(unit_->get_instance());
+	auto success = unit_manager::remove_unit(unit_);
+	if (!success)
+	{
+		return false;
+	}
+
 	unit_ = nullptr;
 	is_passable = true;
 
