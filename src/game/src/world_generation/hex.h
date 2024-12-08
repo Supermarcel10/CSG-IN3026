@@ -43,9 +43,11 @@ public:
     };
 
     bool build(ref<prefab> new_building, ACTOR owner);
+    ref<building> get_building() { return building_; }
     bool destroy_building();
 
     bool spawn_unit(ref<prefab> new_unit, ACTOR owner);
+    ref<unit> get_unit() { return unit_; }
     bool destroy_unit();
 
 // Friend Accessible
