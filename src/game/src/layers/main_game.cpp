@@ -13,19 +13,19 @@ const auto DEBUG = true;
 main_game::main_game(game_state_manager& state_manager)
     : controlled_layer(state_manager)
     , resource_manager()
-    , m_2d_camera(-1.6f, 1.6f, -0.9f, 0.9f)
-    , m_3d_camera((float)engine::application::window().width(), (float)engine::application::window().height())
+    , camera_2d_(-1.6f, 1.6f, -0.9f, 0.9f)
+    , camera_3d_((float)engine::application::window().width(), (float)engine::application::window().height())
 {
-    //    engine::input::anchor_mouse(true);
+    // engine::input::anchor_mouse(true);
     // TODO: Fix the anchor mouse not existing.
     engine::application::window().show_mouse_cursor();
 
     // Initialise audio and play background music
-    m_audio_manager = engine::audio_manager::instance();
-    m_audio_manager->init();
-    //    m_audio_manager->load_sound("", engine::sound_type::spatialised, "bounce");
-    m_audio_manager->load_sound("assets/audio/music/vtense_A.wav", "assets/audio/music/vtense_B.wav", "music");
-    m_audio_manager->play_parallel("music");
+    audio_manager = engine::audio_manager::instance();
+    audio_manager->init();
+    // audio_manager->load_sound("", engine::sound_type::spatialised, "bounce");
+    audio_manager->load_sound("assets/audio/music/vtense_A.wav", "assets/audio/music/vtense_B.wav", "music");
+    //audio_manager->play_parallel("music");
 
     // Initialise the shaders, materials and lights
     auto mesh_shader = engine::renderer::shaders_library()->get("mesh");
@@ -36,16 +36,16 @@ main_game::main_game(game_state_manager& state_manager)
     std::dynamic_pointer_cast<engine::gl_shader>(mesh_shader)->set_uniform("gColorMap", 0);
 
     // #c4c4bc (196, 196, 188)
-    m_directionalLight.Color = vec3(
+    directional_light_.Color = vec3(
         (float)196 / 255,
         (float)196 / 255,
         (float)188 / 255);
 
-    m_directionalLight.AmbientIntensity = 0.55f;
-    m_directionalLight.DiffuseIntensity = 0.75f;
-    m_directionalLight.Direction = glm::normalize(vec3(1.f, -.2f, .2f));
+    directional_light_.AmbientIntensity = 0.55f;
+    directional_light_.DiffuseIntensity = 0.75f;
+    directional_light_.Direction = glm::normalize(vec3(1.f, -.2f, .2f));
 
-    m_directionalLight.submit(mesh_shader);
+    directional_light_.submit(mesh_shader);
 
     std::dynamic_pointer_cast<engine::gl_shader>(mesh_shader)->set_uniform("gMatSpecularIntensity", 1.f);
     std::dynamic_pointer_cast<engine::gl_shader>(mesh_shader)->set_uniform("gSpecularPower", 10.f);
@@ -58,7 +58,7 @@ main_game::main_game(game_state_manager& state_manager)
         glm::ortho(0.f, (float)engine::application::window().width(), 0.f,
             (float)engine::application::window().height()));
 
-    m_mannequin_material = engine::material::create(
+    mannequin_material_ = engine::material::create(
         1.0f,
         vec3(0.5f, 0.5f, 0.5f),
         vec3(0.5f, 0.5f, 0.5f),
@@ -66,7 +66,7 @@ main_game::main_game(game_state_manager& state_manager)
         1.0f
     );
 
-    m_skybox = skybox::create(50.f,
+    skybox_ = skybox::create(40.f,
         {
             engine::texture_2d::create("assets/textures/skybox/front.jpg", true),
             engine::texture_2d::create("assets/textures/skybox/right.jpg", true),
@@ -91,7 +91,7 @@ main_game::main_game(game_state_manager& state_manager)
     mannequin_props.textures = mannequin_textures;
     mannequin_props.type = 0;
     mannequin_props.bounding_shape = m_skinned_mesh->size() / 2.f * mannequin_props.scale.x;
-    m_mannequin = game_object::create(mannequin_props);
+    mannequin_ = game_object::create(mannequin_props);
 
     // CLOUD
     // TODO: See if the cloud can be made into a primitive instead to hit the requirements for Milestone 2.
@@ -103,7 +103,7 @@ main_game::main_game(game_state_manager& state_manager)
     world_generator generator(grid, "SEED TBD", 10);
     generator.generate();
 
-    instances = grid.get_all_prefab_instances();
+    instances_ = grid.get_all_prefab_instances();
 
     // EXAMPLE BUILDINGS
 
@@ -122,16 +122,21 @@ main_game::main_game(game_state_manager& state_manager)
 
     // EXAMPLE UNITS
 
-    auto blue_unit = prefabs::get(UNIT::BASE_UNIT, COLOR::BLUE);
+    auto red_ship = prefabs::get(UNIT::SHIP, COLOR::RED, UNIT_VARIANT::ACCENT);
+    auto blue_unit = prefabs::get(UNIT::BASE_UNIT, COLOR::BLUE, UNIT_VARIANT::ACCENT);
     auto red_unit = prefabs::get(UNIT::BASE_UNIT, COLOR::RED);
     auto catapult = prefabs::get(UNIT::CATAPULT, COLOR::BLUE);
+    auto cannon = prefabs::get(UNIT::CANNON, COLOR::BLUE, UNIT_VARIANT::ACCENT);
 
     grid.get_tile(hex_coord{ 1, 1 })->spawn_unit(blue_unit, ACTOR::PLAYER);
     grid.get_tile(hex_coord{ 2, 1 })->spawn_unit(blue_unit, ACTOR::PLAYER);
-    grid.get_tile(hex_coord{ 1, 2 })->spawn_unit(blue_unit, ACTOR::PLAYER);
+    grid.get_tile(hex_coord{ 1, 2 })->spawn_unit(cannon, ACTOR::PLAYER);
     grid.get_tile(hex_coord{ 2, 2 })->spawn_unit(catapult, ACTOR::PLAYER);
 
+    catapult_ = grid.get_tile(hex_coord{ 2, 2 }).get()->get_unit();
+
     grid.get_tile(hex_coord{ 4, 2 })->spawn_unit(red_unit, ACTOR::ENEMY1);
+    grid.get_tile(hex_coord{ 2, 8 })->spawn_unit(red_ship, ACTOR::ENEMY1);
 
     // ROCK
 
@@ -139,7 +144,7 @@ main_game::main_game(game_state_manager& state_manager)
     //#898989 rgb(137, 137, 137)
     //#afafaf rgb(175, 175, 175)
     //#c1c1c1 rgb(193, 193, 193)
-    rock_material = engine::material::create(
+    rock_material_ = engine::material::create(
             0.0f,
             vec3(
                     (float) 73 / 255,
@@ -162,25 +167,25 @@ main_game::main_game(game_state_manager& state_manager)
     rock_props.meshes = { rock_shape->mesh() };
     rock_props.bounding_shape = vec3(0.5f);
     rock_props.is_static = true;
-    m_rock = game_object::create(rock_props);
+    rock_ = game_object::create(rock_props);
 
     // BINDING OBJECTS
 
-    m_text_manager = engine::text_manager::create();
+    text_manager = engine::text_manager::create();
 
     m_skinned_mesh->switch_animation(6);
 }
 
 void main_game::on_update(const engine::timestep& time_step)
 {
-    m_3d_camera.on_update(time_step);
+    camera_3d_.on_update(time_step);
 
-    // m_physics_manager->dynamics_world_update(objects, double(time_step));
+    // physics_manager->dynamics_world_update(objects, double(time_step));
 
-    m_mannequin->animated_mesh()->on_update(time_step);
+    mannequin_->animated_mesh()->on_update(time_step);
 
-    m_audio_manager->on_update(time_step);
-    m_audio_manager->update_with_camera(m_3d_camera);
+    audio_manager->on_update(time_step);
+    audio_manager->update_with_camera(camera_3d_);
 }
 
 void main_game::on_render()
@@ -190,27 +195,27 @@ void main_game::on_render()
 
     // Set up  shader. (renders textures and materials)
     const auto mesh_shader = engine::renderer::shaders_library()->get("mesh");
-    engine::renderer::begin_scene(m_3d_camera, mesh_shader);
+    engine::renderer::begin_scene(camera_3d_, mesh_shader);
 
     // Set up some of the scene's parameters in the shader
-    std::dynamic_pointer_cast<engine::gl_shader>(mesh_shader)->set_uniform("gEyeWorldPos", m_3d_camera.position());
+    std::dynamic_pointer_cast<engine::gl_shader>(mesh_shader)->set_uniform("gEyeWorldPos", camera_3d_.position());
 
     // Position the skybox centred on the player and render it
     glm::mat4 skybox_tranform(1.0f);
-    skybox_tranform = glm::translate(skybox_tranform, m_3d_camera.position());
-    for (const auto& texture : m_skybox->textures())
+    skybox_tranform = glm::translate(skybox_tranform, camera_3d_.position());
+    for (const auto& texture : skybox_->textures())
     {
         texture->bind();
     }
-    engine::renderer::submit(mesh_shader, m_skybox, skybox_tranform);
+    engine::renderer::submit(mesh_shader, skybox_, skybox_tranform);
 
     engine::prefab_renderer::render_all(mesh_shader);
 
-    rock_material->submit(mesh_shader);
-    engine::renderer::submit(mesh_shader, m_rock);
+    rock_material_->submit(mesh_shader);
+    engine::renderer::submit(mesh_shader, rock_);
 
-    m_mannequin_material->submit(mesh_shader);
-    engine::renderer::submit(mesh_shader, m_mannequin);
+    mannequin_material_->submit(mesh_shader);
+    engine::renderer::submit(mesh_shader, mannequin_);
 
     engine::renderer::end_scene();
 }
@@ -232,7 +237,21 @@ void main_game::handle_key_event(engine::key_pressed_event& e) {
     {
         // TODO: Investigate issue where pause menu is not triggered first time.
         // Debounce issue?
-        state_manager.toggle_pause();
+        //state_manager.toggle_pause();
+    }
+
+    // TEMPORARY STUFF
+    if (key_code == key_codes::KEY_F)
+    {
+        if (catapult_ == nullptr) {
+            return;
+        }
+
+        auto catapult = std::dynamic_pointer_cast<attack_unit>(catapult_);
+        if (catapult != nullptr)
+        {
+            catapult->attack(hex_coord{ 0, 0 });
+        }
     }
 
     // ______________________________________________________
@@ -245,11 +264,11 @@ void main_game::handle_key_event(engine::key_pressed_event& e) {
 
     if (key_code == key_codes::KEY_F9)
     {
-        m_audio_manager->set_parallel_crossfade("music", 1.0f, 1.0f);
+        audio_manager->set_parallel_crossfade("music", 1.0f, 1.0f);
     }
 
     if (key_code == key_codes::KEY_F10)
     {
-        m_audio_manager->set_parallel_crossfade("music", 0.0f, 1.0f);
+        audio_manager->set_parallel_crossfade("music", 0.0f, 1.0f);
     }
 }

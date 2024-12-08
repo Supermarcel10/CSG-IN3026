@@ -5,6 +5,8 @@
 #include "../controlled_layer.h"
 #include "../managers/prefab/prefabs.h"
 #include "../managers/resource/resource_manager.h"
+#include "../core/units/unit.h"
+#include "../core/units/attack_unit.h"
 
 
 using std::vector;
@@ -19,31 +21,30 @@ class main_game : public controlled_layer
 private:
     prefabs prefabs;
     resource_manager resource_manager;
+    ref<engine::bullet_manager> physics_manager{};
+    ref<engine::audio_manager>  audio_manager{};
+    ref<engine::text_manager>	text_manager{};
 
-    vector<ref<prefab_instance>> instances;
-
-
-    ref<skybox>			m_skybox{};
-
-    ref<game_object>	m_mannequin{};
-    ref<material>		m_mannequin_material{};
-
-    ref<game_object>    m_rock{};
-    ref<material>       rock_material{};
+    vector<ref<prefab_instance>> instances_;
 
 
-    engine::DirectionalLight            m_directionalLight;
+    ref<skybox>			skybox_{};
 
-    ref<engine::bullet_manager> m_physics_manager{};
-    ref<engine::audio_manager>  m_audio_manager{};
-    ref<engine::text_manager>	m_text_manager{};
+    ref<game_object>	mannequin_{};
+    ref<material>		mannequin_material_{};
 
-    engine::orthographic_camera       m_2d_camera;
-    engine::perspective_camera        m_3d_camera;
+    ref<game_object>    rock_{};
+    ref<material>       rock_material_{};
+
+    ref<unit>           catapult_;
+
+    engine::DirectionalLight            directional_light_;
+
+    engine::orthographic_camera       camera_2d_;
+    engine::perspective_camera        camera_3d_;
 
 public:
     main_game(game_state_manager& state_manager);
-    ~main_game() = default;
 
     void on_update(const engine::timestep& time_step) override;
     void on_render() override;
