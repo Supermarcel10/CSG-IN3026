@@ -1,0 +1,40 @@
+{
+  "properties": {
+    "version": "0.0.0",
+    "timestamp": 123456
+  },
+  "gameConfig": {
+    "seed": "1234",
+    "size": 20,
+    "difficulty": {
+      "gather": 2,
+      "enemy": 2
+    }
+  },
+  "gameState": {
+    "resources": {
+      "gold": 50,
+      "food": 50,
+      "wood": 50,
+      "stone": 50,
+      "metal": 50
+    },
+    "tiles": [
+      {
+        "building": [
+          {
+            "coord": {
+              "x": 0,
+              "y": 0
+            },
+            "type": "foo",
+            "color": "blue",
+            "hp": 100,
+            "owner": "foo"
+          }
+        ],
+        "troop": []
+      }
+    ]
+  }
+}
