@@ -26,25 +26,15 @@ private:
 
         if (class_type == UNIT_CLASS::ATTACK)
         {
-            return create_attack_unit(unit_type, instance, owner);
+            uint_fast8_t range = get_range_for_attack_unit(unit_type);
+
+            return std::make_shared<attack_unit>(class_type, unit_type, instance, owner, range);
         }
         else
         {
             return std::make_shared<unit>(class_type, unit_type, instance, owner);
         }
 
-    };
-
-    static ref<unit> create_attack_unit(
-        UNIT unit_type,
-        ref<prefab_instance> instance,
-        ACTOR owner
-    )
-    {
-        UNIT_CLASS class_type = get_class_for_unit(unit_type);
-        uint_fast8_t range = get_range_for_attack_unit(unit_type);
-
-        return std::make_shared<attack_unit>(class_type, unit_type, instance, owner, range);
     };
 
     static UNIT_CLASS get_class_for_unit(UNIT unit_type)
